@@ -29,16 +29,15 @@ adhering to the RFC 862 specification. Use port 7007 instead of 7.
 
 Submit your solution as a single Java-file RFC862.java.
 
-##Write programs to estimate UDP datagram loss.
+##Write programs to estimate UDP datagram loss
 Your programs must accept as input (a) datagram size, (b) number of datagrams sent and (c) interval between transmissions. The program must output (1) absolute number and percentage of lost datagrams and (2) absolute number and percentage of duplicated datagrams. It is acceptable if your estimate cannot distinguish between losing a single reply, losing a single response, or losing both a reply and a response.
 
 Use your loss estimator to demonstrate:
-
-Datagram loss on a local connection on a single machine (i.e., no physical net).
-Datagram loss on Wifi. 
-Datagram loss on ethernet.
-Datagram loss on the Internet (i.e., transmitting across multiple physical nets).
-Indicate for each of these four cases the parameters (a-c above) you used to elicit the loss and the observed lossage (i-ii above). Explain where and why you expect the loss to be happening. 
+- Datagram loss on a local connection on a single machine (i.e., no physical net).
+- Datagram loss on Wifi. 
+- Datagram loss on ethernet.
+- Datagram loss on the Internet (i.e., transmitting across multiple physical nets).
+- Indicate for each of these four cases the parameters (a-c above) you used to elicit the loss and the observed lossage (i-ii above). Explain where and why you expect the loss to be happening. 
 
 Submit java source file(s) and a .txt file briefly summarising your findings.
 

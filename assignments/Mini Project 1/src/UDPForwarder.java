@@ -13,6 +13,7 @@ public class UDPForwarder {
 	private static int port2; 
 	
     public static void main(String args[]) throws Exception {
+    	if(args.length == 0) System.out.println("Please specify 3 ports as arguments. (Client, p1 and p2 respectively)");
     	client = Integer.parseInt(args[0]);
     	port1 = Integer.parseInt(args[1]);
     	port2 = Integer.parseInt(args[2]);

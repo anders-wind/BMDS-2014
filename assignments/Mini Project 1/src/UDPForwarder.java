@@ -8,10 +8,14 @@ import java.lang.*;
 
 public class UDPForwarder {
 	
-	private static final int port1 = 1234;
-	private static final int port2 = 4321; 
+	private static int client;
+	private static int port1;
+	private static int port2; 
 	
     public static void main(String args[]) throws Exception {
+    	client = Integer.parseInt(args[0]);
+    	port1 = Integer.parseInt(args[1]);
+    	port2 = Integer.parseInt(args[2]);
         new Thread(() -> p1()).start();
         new Thread(() -> p2()).start();
         
@@ -50,7 +54,7 @@ public class UDPForwarder {
             while(true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
-                System.out.println("P2 - Dropped the package.. faggot");
+                System.out.println("P2 - Dropped the package message " + new String(request.getData()));
             }
         } catch (Exception e){
         	System.out.println("Socket2: " + e.getMessage());
@@ -61,7 +65,7 @@ public class UDPForwarder {
     public static void client() {
 		DatagramSocket aSocket = null;
 		try{
-			aSocket = new DatagramSocket(5556);
+			aSocket = new DatagramSocket(client);
 
             // create socket at agreed port
 			byte[] buffer = "lol".getBytes();

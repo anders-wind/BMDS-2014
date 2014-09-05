@@ -8,15 +8,17 @@ import java.lang.*;
 
 public class UDPForwarder {
 	
-	private static final int port1 = 9999;
-	private static final int port2 = 6666; 
+	private static final int port1 = 1234;
+	private static final int port2 = 4321; 
 	
-    public static void main(String args[]) {
+    public static void main(String args[]) throws Exception {
         new Thread(() -> p1()).start();
         new Thread(() -> p2()).start();
         
-        //System.in.read();
-        //client();
+        while(true) {
+        	System.in.read();
+        	client();
+        }
     }
     
     public static void p1() {
@@ -27,12 +29,15 @@ public class UDPForwarder {
             while(true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
-                DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(), request.getAddress(), port2);
+                DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(), InetAddress.getLocalHost(), port2);
                 aSocket.send(reply);
-                System.out.println("Forwarded message to p2");
+                System.out.println("P1 forwarded message to p2");
             }
         } catch (Exception e){
-        	System.out.println("Socket: " + e.getMessage());
+        	System.out.println("Socket1: " + e.getMessage());
+        	
+        } finally{
+        	if(aSocket != null) aSocket.close();
         }
     }
     
@@ -48,21 +53,25 @@ public class UDPForwarder {
                 System.out.println("P2 - Dropped the package.. faggot");
             }
         } catch (Exception e){
-        	System.out.println("Socket: " + e.getMessage());
+        	System.out.println("Socket2: " + e.getMessage());
+        } finally {
+        	if(aSocket != null) aSocket.close();
         }
     }
     public static void client() {
 		DatagramSocket aSocket = null;
 		try{
-			aSocket = new DatagramSocket(1241);
+			aSocket = new DatagramSocket(5556);
 
             // create socket at agreed port
 			byte[] buffer = "lol".getBytes();
-			DatagramPacket request = new DatagramPacket(buffer, buffer.length, InetAddress.getLocalHost(), 9999);
+			DatagramPacket request = new DatagramPacket(buffer, buffer.length, InetAddress.getLocalHost(), port1);
 
 			aSocket.send(request);
 		} catch (Exception e){
-			System.out.println("Socket: " + e.getMessage());
-		} 
+			System.out.println("SocketClient: " + e.getMessage());
+		} finally {
+			if(aSocket != null) aSocket.close();
+		}
     }
 }

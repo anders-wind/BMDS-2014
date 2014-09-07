@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -39,7 +40,7 @@ public class TCPForwarder implements Runnable {
             	while((clientSentence = inFromClient.readLine()).length() != 0) {
             		result += clientSentence + "\n";
             	}
-            	System.out.println("Client data retrieved.");
+            	System.out.println("Client request retrieved.");
              	
             	// retrieve data from ITU
             	InetAddress address = InetAddress.getByName("itu.dk");
@@ -47,14 +48,17 @@ public class TCPForwarder implements Runnable {
                 DataOutputStream toItu = new DataOutputStream(forward.getOutputStream());
                 DataInputStream  fromItu = new DataInputStream(forward.getInputStream());
                 toItu.writeBytes(result + "\n"); // forward client to itu.
-                
-                // get size of returning message from itu 
-                short size = fromItu.readShort();
-                byte[] payload = new byte[size];
-                fromItu.readFully(payload);
+                                
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                byte buffer[] = new byte[1024];
+                for(int s; (s=fromItu.read(buffer)) != -1; )
+                {
+                  baos.write(buffer, 0, s);
+                }
+                byte[] yo = baos.toByteArray();
                 forward.close();
-                outToClient.write(payload);
-                outToClient.flush();
+                outToClient.write(yo);
+                System.out.println("Client request forwarded and response returned.");
                 connection.close();
             }
         } catch(Exception e){

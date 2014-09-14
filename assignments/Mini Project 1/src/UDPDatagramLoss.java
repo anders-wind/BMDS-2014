@@ -25,9 +25,9 @@ public class UDPDatagramLoss {
 	{
 		sender = 2405;
 		reciever = 2909;
-		dgSize = Integer.parseInt("100");
-		dgAmt = Integer.parseInt("1000");
-		interval = Double.parseDouble("0.5");
+		dgSize = Integer.parseInt("10000");
+		dgAmt = Integer.parseInt("100000");
+		interval = Double.parseDouble("0.005");
 
 		returnedPacketsArray = new int[dgAmt];
 
@@ -54,7 +54,7 @@ public class UDPDatagramLoss {
 
 		try
 		{
-			Thread.sleep(10000);
+			Thread.sleep(5000);
 
 		}
 		catch(InterruptedException e)
@@ -123,6 +123,7 @@ public class UDPDatagramLoss {
 			byte[] dataInByteArrayForm = dataInStringForm.getBytes();
 
 			DatagramPacket request = new DatagramPacket(dataInByteArrayForm,dataInByteArrayForm.length,InetAddress.getLocalHost(),reciever);
+			//DatagramPacket request = new DatagramPacket(dataInByteArrayForm,dataInByteArrayForm.length,InetAddress.getByName("106.185.40.123"),reciever);
 			try
 			{
 				aSocket.send(request);
@@ -130,10 +131,7 @@ public class UDPDatagramLoss {
 			catch(IOException e)
 			{
 				System.out.println("Error sending packet: " + e.getMessage());
-			}finally {
-				if(aSocket != null) aSocket.close();
 			}
-
 		}
 	}
 
@@ -143,6 +141,10 @@ public class UDPDatagramLoss {
 		try
 		{
 			bSocket = new DatagramSocket(reciever);
+		}
+		catch(IOException e) {
+			return;
+		}
 
 		while(true)
 		{
@@ -152,7 +154,7 @@ public class UDPDatagramLoss {
 			try
 			{
 				bSocket.receive(receivingPacket);
-				System.out.println("recieve - got the package message " + new String(receivingPacket.getData()));
+				//System.out.println("recieve - got the package message " + new String(receivingPacket.getData()));
 			}
 			catch(IOException e)
 			{
@@ -169,11 +171,6 @@ public class UDPDatagramLoss {
 
 			returnedPacketsArray[packetNumber]++;
 		}
-		}
-		catch(IOException e) {
-			return;
-		}finally {
-			if(bSocket != null) bSocket.close();
-		}
+
 	}
 }

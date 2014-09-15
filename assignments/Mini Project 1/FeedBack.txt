@@ -1,0 +1,35 @@
+BMDS-Autumn 2014, Mini-Project 1, 15/09/14.
+
+Authors: Anders Fischer-Nielsen, Anders Wind Steffensen, Christopher Blundell & Daniel Varab.
+
+Estimated time breakdown:
+Design.				Code.
+2					6
+1					4
+2					5
+1					3
+
+Non-working parts:
+RFC862 TCP: The client manages to send, and the server receives the message, but after this the socket closes and multiple exceptions are thrown.
+
+Reliable UDP: Reliable-UDP is not not possible.
+	Functionally UDP cannot, per definition and specification, be reliable. Because of this many may argue
+	that it is impossible to implement "secure" communication by purely using UDP as messages are bound to
+	be lost, even locally (network or even a single computer communication with itself).
+
+	It is thought possible to somewhat possible to make a 'pseudo'-reliable UDP connection if we inherit from
+	the way the TCP protocol is implemented, being through a 'handshake'. 
+
+	To achieve this with UDP we send a message to the server with a explanation of what we intended to send 
+	next. This could be length, date, or hash. The server then responds with an answers, informing that it 
+	has indeed recieved this, this functions vica versa with the client. By doing this both parties always
+	confirm arrival. As UDP doesn't garantee that the message gets through we must send many packages and the
+	server must ofcourse have a mechanism for dealing with that, which as our implementation, is through a map.
+
+	Notes to code & assignment.
+	As the assignment is limited to having a "reliable" connection to the server, we cut out the handshake and
+	merely focused on making sure that the server actually recieved the message, and prints it out, once. This
+	is done via a map that merely maps a ip address and the contents of a payload
+
+Feedback for assignment:
+Every member in the group believe that the difficulty of this assignment was set too high. This combined with an assignment containing so many problems to solve, makes this assignment hard to grasp.

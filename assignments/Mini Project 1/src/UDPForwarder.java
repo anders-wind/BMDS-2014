@@ -1,49 +1,82 @@
-import java.net.DatagramPacket;
+
+import java.io.IOException;
 import java.net.DatagramSocket;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.lang.*;
 
-/**
- *
- */
-public class UDPForwarder implements Runnable
-{
-    private String h = "";
-    private int p1, p2;
-
-    public static void main(String[] args) {
-        UDPForwarder first = new UDPForwarder("TESTING!", 1234, 4321);
-        UDPForwarder second = new UDPForwarder("TESTING!", 4321, 8888);
-        new Thread(first);
-        new Thread(second);
+public class UDPForwarder {
+	
+	private static int client;
+	private static int port1;
+	private static int port2; 
+	
+    public static void main(String args[]) throws Exception {
+    	if(args.length == 0) System.out.println("Please specify 3 ports as arguments. (Client, p1 and p2 respectively)");
+    	client = Integer.parseInt(args[0]);
+    	port1 = Integer.parseInt(args[1]);
+    	port2 = Integer.parseInt(args[2]);
+        new Thread(() -> p1()).start();
+        new Thread(() -> p2()).start();
+        
+        while(true) {
+        	System.in.read();
+        	client();
+        }
     }
-
-    public UDPForwarder(String h, int p1, int p2) {
-        this.h = h;
-        this.p1 = p1;
-        this.p2 = p2;
-        run();
-    }
-
-    @Override
-    public void run() {
+    
+    public static void p1() {
+    	DatagramSocket aSocket = null;
         try{
-            DatagramSocket serverSocketP1 = new DatagramSocket(p1);
+            aSocket = new DatagramSocket(port1);
             byte[] buffer = new byte[1000];
             while(true){
-                DatagramPacket datagramPacket = new DatagramPacket(buffer, buffer.length);
-                System.out.println("Listening . . .");
-                serverSocketP1.receive(datagramPacket);
-                System.out.println("Received " +
-                        datagramPacket.getLength() + " bytes" +
-                        " from " +
-                        datagramPacket.getAddress().toString() +
-                        ":" + datagramPacket.getPort());
-                byte[] lol = datagramPacket.getData();
-                DatagramPacket forward = new DatagramPacket(lol, buffer.length, datagramPacket.getAddress(), p2);
-                serverSocketP1.send(forward);
-
+                DatagramPacket request = new DatagramPacket(buffer, buffer.length);
+                aSocket.receive(request);
+                DatagramPacket reply = new DatagramPacket(request.getData(), request.getLength(), InetAddress.getLocalHost(), port2);
+                aSocket.send(reply);
+                System.out.println("P1 forwarded message to p2");
             }
-        } catch(Exception e){
-
+        } catch (Exception e){
+        	System.out.println("Socket1: " + e.getMessage());
+        	
+        } finally{
+        	if(aSocket != null) aSocket.close();
         }
+    }
+    
+    public static void p2() {
+    	DatagramSocket aSocket = null;
+        try{
+            aSocket = new DatagramSocket(port2);
+            // create socket at agreed port
+            byte[] buffer = new byte[1000];
+            while(true){
+                DatagramPacket request = new DatagramPacket(buffer, buffer.length);
+                aSocket.receive(request);
+                System.out.println("P2 - Dropped the package message " + new String(request.getData()));
+            }
+        } catch (Exception e){
+        	System.out.println("Socket2: " + e.getMessage());
+        } finally {
+        	if(aSocket != null) aSocket.close();
+        }
+    }
+    public static void client() {
+		DatagramSocket aSocket = null;
+		try{
+			aSocket = new DatagramSocket(client);
+
+            // create socket at agreed port
+			byte[] buffer = "lol".getBytes();
+			DatagramPacket request = new DatagramPacket(buffer, buffer.length, InetAddress.getLocalHost(), port1);
+
+			aSocket.send(request);
+		} catch (Exception e){
+			System.out.println("SocketClient: " + e.getMessage());
+		} finally {
+			if(aSocket != null) aSocket.close();
+		}
     }
 }

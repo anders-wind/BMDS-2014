@@ -13,10 +13,10 @@ public class UDPForwarder {
 	private static int port2; 
 	
     public static void main(String args[]) throws Exception {
-    	if(args.length == 0) System.out.println("Please specify 3 ports as arguments. (Client, p1 and p2 respectively)");
-    	client = Integer.parseInt(args[0]);
-    	port1 = Integer.parseInt(args[1]);
-    	port2 = Integer.parseInt(args[2]);
+    	
+    	client = 8888; //Integer.parseInt(args[0]);
+    	port1 = 9999; //Integer.parseInt(args[1]);
+    	port2 = 777; //Integer.parseInt(args[2]);
         new Thread(() -> p1()).start();
         new Thread(() -> p2()).start();
         
@@ -55,7 +55,9 @@ public class UDPForwarder {
             while(true){
                 DatagramPacket request = new DatagramPacket(buffer, buffer.length);
                 aSocket.receive(request);
-                System.out.println("P2 - Dropped the package message " + new String(request.getData()));
+                byte[] data = new byte[request.getLength()];
+                System.arraycopy(request.getData(), request.getOffset(), data, 0, request.getLength());
+                System.out.println("P2 - Dropped the package message " + new String(data));
             }
         } catch (Exception e){
         	System.out.println("Socket2: " + e.getMessage());
@@ -69,7 +71,7 @@ public class UDPForwarder {
 			aSocket = new DatagramSocket(client);
 
             // create socket at agreed port
-			byte[] buffer = "lol".getBytes();
+			byte[] buffer = "lolo".getBytes();
 			DatagramPacket request = new DatagramPacket(buffer, buffer.length, InetAddress.getLocalHost(), port1);
 
 			aSocket.send(request);

@@ -34,7 +34,7 @@ public class ReliableUDP {
 			map.put(address, new String(packet.getData()));
 			System.out.println(new String(packet.getData()));
 			// >>>>>>>>>> OBS <<<<<<<<<<<
-			// This implementation WILL if the same message is sent from the same origin drop it. Even if its another message later. (bad)
+			// This implementation WILL if a message of the same length is sent from the same origin drop it. (bad)
 			// This could be fixed my adding more information to the package, date fx.
     	}       	
 	}

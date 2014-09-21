@@ -1,11 +1,11 @@
 \section{Exercise A.}
-A client attempts to synchronise with a time server. It records the round-trip times and timestamps returned by the server in the table below.\\
-\begin{itemize}
+A client attempts to synchronise with a time server. It records the round-trip times and timestamps returned by the server in the table below.
+\begin{enumerate}
 \item Which of these times should it use to set its clock? 
 \item To what time should it set it? 
 \item Estimate the accuracy of the setting with respect to the server’s clock. 
 \item If it is known that the time between sending and receiving a message in the system concerned is at least 8 ms, do your answers change?
-\end{itemize}
+\end{enumerate}
 \begin{tabular}{ l | r }
 Round-trip (ms) & Time (hr:min:sec) \\[0.1cm]
 \hline \\
@@ -15,17 +15,17 @@ Round-trip (ms) & Time (hr:min:sec) \\[0.1cm]
 \hline 
 \end{tabular}\\\\
 
-\textbf{A.1 - Which of these times should it use to set its clock?}\\
+\textbf{1) - Which of these times should it use to set its clock?}\\
 Picking the time which had the fastest round trip (C) gives us a smaller margin for error. This means better accuracy. Therefore the answer is (C) 10:54:28.342. Since we do not know the distribution of the time from and to the server, the smaller the round trip, the smaller the difference in distribution of time is possible.\\
 
-\textbf{A.2 - To what time should it set it?}\\
+\textbf{2) - To what time should it set it?}\\
 Since we picked C for setting the time we will use the result to calculate the time using the form
 time + (round trip/2)\\
 With our data:\\
 10:54:28:342+20/2 = 10:54:28:352\\
 Therefore we should set the time to 10:54:28:352\\
 
-\textbf{A.3 - Estimate the accuracy of the setting with respect to the server’s clock.}\\
+\textbf{3) - Estimate the accuracy of the setting with respect to the server’s clock.}\\
 Since we add the roundtrip divided by two to the time, we have some inaccuracy. We are not sure if the first half of the roundtrip might take 0 ms or 20 and the trip back then respectively 20 or 0 ms. Therefore the accuracy of this clock may be 
 \begin{quote}
 +-(TRound / 2 - min)
@@ -36,13 +36,13 @@ With our data (and with min removed since we do not know it):
 \end{quote}
 Therefore the accuracy of our clock will be +-10ms\\
 
-\textbf{A.4 - If it is known that the time between sending and receiving a message in the system concerned is at least 8 ms, do your answers change?}\\
+\textbf{4) - If it is known that the time between sending and receiving a message in the system concerned is at least 8 ms, do your answers change?}\\
 
-@A.1 - Even if we know that the round trip takes at least 8 ms, it still wouldn’t make sense to pick a less accurate time such as (A) and (B).\\
+@1) - Even if we know that the round trip takes at least 8 ms, it still wouldn’t make sense to pick a less accurate time such as (A) and (B).\\
 
-@A.2 - The answer to our second question would not change either considering we don’t change our answer to the first question.\\
+@2) - The answer to our second question would not change either considering we don’t change our answer to the first question.\\
 
-@A.3 - The accuracy of (C) would change to 2 ms since we now know the minimum time we can use the fomular for accuracy one more time
+@3) - The accuracy of (C) would change to 2 ms since we now know the minimum time we can use the fomular for accuracy one more time
 \begin{quote}
 +-(TRound / 2 - min)
 

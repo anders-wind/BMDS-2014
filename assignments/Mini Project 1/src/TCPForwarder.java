@@ -47,7 +47,7 @@ public class TCPForwarder implements Runnable {
                 Socket forward = new Socket(address, 80);    
                 DataOutputStream toItu = new DataOutputStream(forward.getOutputStream());
                 DataInputStream  fromItu = new DataInputStream(forward.getInputStream());
-                toItu.writeBytes(result + "\n"); // forward client to itu.
+                toItu.writeBytes(result); // forward client to itu.
                                 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 byte buffer[] = new byte[1024];

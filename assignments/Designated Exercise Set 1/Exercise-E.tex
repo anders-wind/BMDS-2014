@@ -1,1 +1,21 @@
 \section{Exercise E.}
+Consider this distributed system: There are 3 processes; each process has a state consisting of a single number k. Whenever a process receives a message, it updates its state k to a randomly chosen new number. If the state k of a process is even, it will transmit messages at random intervals; if odd, it does nothing.\\\\
+Questions
+\begin{enumerate}
+\item Explain how this system may deadlock.
+\item Explain how this system may deadlock even if you can make no assumptions on the initial state.
+\item Explain how the snapshot algorithm can be used to discover if the system has deadlocked. (NB! Assume that a process in odd state will nonetheless send markers as required by the algorithm. Moreover, a process which receives a message containing only a marker does not update its state k.)
+\item Summarise the steps of the snapshot algorithm when executed on the system with initial global states 3, 4, 7 and no messages in transit. Will the resulting snapshot allow you to conclude that the system is deadlocked?
+\item Summarise the steps of the snapshot algorithm when executed on the system with initial global states 3, 5, 7 and no messages in transit. Will the resulting snapshot allow you to conclude that the system is deadlocked?
+\end{enumerate}
+Answers
+\begin{enumerate}
+\item The system will deadlock if all processes are have k as an uneven number. If the system starts with every process with k equal to an uneven number, nothing will happen at all as the system will be locked, unable to retrieve.
+\item The system can still freeze. Since every process gets a random number, all three processes might get an uneven number again. Imagine a given point in time where p1 = uneven, p2 = uneven, p3 even. P3 is sendings messages at an unknown interval, which pings p2 whichs random outcome sets its k-value to an even number. Now, simultaneously p3 and p2 send each other a message, which unluckily both result in uneven k-evaluations, effectively deadlocking the system.
+\item As the snapshot algorithm can be used to monitor the traffic of a distributed system one may inspect the states to disclose deadlocks. If processes are not omitting messages and the channels are empty it is safe to say that a deadlock has occurred.
+\item \emph{S0: p1:<3>, p2:<4>, p3<7>, c1:<>, c2:<>, c3:<>, c4:<>, c5:<>, c6:<>} \\
+As the snapshot algorithm is initiated on an empty system the first step is to emit the sending rule by sending a mark from p2 to its outgoing channels (p1 and p3) which are consequently pushed to record their state as a result of the receiving rule. Assuming for the sake of this question, p2 sends its message (m) to process p1 via channel c2 after its mark, p1 will set c2<m> as specified to the algorithm. At this point we are in the final global state which isn’t a deadlock due to the factor of p2s continuation to send messages. This is visible through the snapshot by the state of c<m>.\\
+\emph{Final global state: p1:<3>, p2:<4>, p3<7>, c1:<>, c2:<m>, c3:<>, c4:<>, c5:<>, c6:<>}
+\item \emph{S0 \& final global state: p1:<3>, p2:<5>, p3<7>, c1:<>, c2:<>, c3:<>, c4:<>, c5:<>, c6:<>} \\
+Just as the previous answer, the initial marks will be broadcasted to the different processes, but in contrary there is no message to be sent and we find ourself in the definition of a deadlock: all processes are waiting. This is aligned with the snapshot as it shows that no messages are in any channels.
+\end{enumerate}

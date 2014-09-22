@@ -45,7 +45,7 @@ public class Sink {
 
 	private void makeConnection() {
 		try {
-			String message = "subscribe - port:" + localPort;
+			String message = "subscribe \n"; //port:" + localPort + "\n";
 
 			Socket theServer = new Socket("localhost", 7777);
 			DataOutputStream out = new DataOutputStream(

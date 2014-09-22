@@ -1,11 +1,5 @@
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -15,9 +9,7 @@ public class Sink {
 	private String h;
 
 	public Sink() {
-		localPort = 2000;
 		h = "";
-
 		test();
 		//makeConnection();
 		//getMessage();
@@ -25,6 +17,7 @@ public class Sink {
 	
 	private void test()
 	{
+		localPort = 2000;
 		Thread testThread = new Thread()
 		{
 			public void run() 
@@ -54,6 +47,8 @@ public class Sink {
 
 			DataInputStream in = new DataInputStream(theServer.getInputStream());
 			String okMessage = in.readLine();
+			
+			localPort = theServer.getLocalPort();
 			theServer.close();
 		} catch (Exception e) {
 			e.printStackTrace();

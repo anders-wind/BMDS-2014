@@ -23,6 +23,7 @@ public class AwesomeServer {
 				DataInputStream fromServer = new DataInputStream(client.getInputStream());
 				
 				String line = fromServer.readLine();
+				toServer.writeBytes("ok \n");
 				if(line.contains("subscribe")) {
 					// new subscriber, add to list
 					String[] split = client.getRemoteSocketAddress().toString().split(":");
@@ -53,6 +54,7 @@ public class AwesomeServer {
 			Socket testSender = new Socket(c.address, c.port);
 			DataOutputStream toServer = new DataOutputStream(testSender.getOutputStream());
 			toServer.writeBytes(message);
+			testSender.close();
 		} catch (IOException e) {
 			// The socket doesn't work.
 			c.dead = true;

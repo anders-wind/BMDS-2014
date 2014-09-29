@@ -25,16 +25,21 @@ public class Sink {
 			out.writeBytes(message);
 
 			DataInputStream in = new DataInputStream(theServer.getInputStream());
-			String okMessage = in.readLine();
-
+			in.readLine();
+			
+			System.out.println("---------\nConnection to AwesomeServer was succesfull\n---------\n");
+			
 			localPort = theServer.getLocalPort();
 			theServer.close();
 		} catch (Exception e) {
 			//e.printStackTrace();
-			System.out.println("Connection to AwesomeServer failed\nSink will terminate");
-			System.exit(0);
+			System.out.println("Connection to AwesomeServer failed...\nTrying again in 1 second");
+			waitForOneSec();
+			makeConnection();
 		}
 	}
+	
+	
 
 	private void getMessage() {
 		ServerSocket socket;
@@ -50,10 +55,23 @@ public class Sink {
 				connection.close();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			//tStackTrace();
+			System.out.println("Connection to AwesomeServer failed...\nTrying again");
+			makeConnection();
 		}
 	}
 
+	
+	private void waitForOneSec()
+	{
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			//e1.printStackTrace();
+			System.out.println("Terminates");
+			System.exit(0);
+		}
+	}
 	
 	public static void main(String[] args) {
 		new Sink("localhost");

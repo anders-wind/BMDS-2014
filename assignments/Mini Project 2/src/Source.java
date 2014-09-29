@@ -49,6 +49,7 @@ public class Source {
 	}
 
 	public static void main(String[] args) {
+
 		// Create a Source and connect it to the server.
 		Runnable r = () -> {
 			try {
@@ -58,6 +59,7 @@ public class Source {
 			}
 		};
 
+		//new Thread(r).start();
 		new Thread(r).start();
 	}
 }

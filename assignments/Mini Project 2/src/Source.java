@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- *
+ * A source for sending out messages to a server for forwarding the messages to subscribed receiving sinks.
  */
 public class Source {
 
@@ -37,7 +37,7 @@ public class Source {
     public static void main(String[] args) {
 
         Runnable r = () -> {
-            //For testing. Create a simple server, print out everything it's received.
+            //For testing. Create a simple server, print out everything it has received.
             try {
                 ServerSocket server = new ServerSocket(7777);
                 Socket s = server.accept();

@@ -1,0 +1,99 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+import sun.nio.ch.SocketAdaptor;
+
+
+public class AwesomeServer {
+	
+	private ArrayList<Client> subscribers; 
+	
+	public AwesomeServer() {
+		subscribers = new ArrayList<Client>();
+		 
+		try {
+			ServerSocket s = new ServerSocket(7777);
+			Socket client;
+			while(true) {
+				client = s.accept();
+				DataOutputStream toServer = new DataOutputStream(client.getOutputStream());
+				DataInputStream fromServer = new DataInputStream(client.getInputStream());
+				
+				String line = fromServer.readLine();
+				if(line.contains("subscribe")) {
+					// new subscriber, add to list
+					String[] split = client.getRemoteSocketAddress().toString().split(":");
+					String caddress = split[0].substring(1, split[0].length());
+					int cport = Integer.parseInt(split[1]);
+					subscribers.add(new Client(caddress, cport));
+				} else {
+					// not a subscribe. publish
+					if(subscribers.isEmpty()) {
+						System.out.println("No subscribers available");
+					} else {
+						subscribers.stream().forEach(c -> Broadcast(c, line));
+						// This might throw an exception
+						Client[] x = (Client[]) subscribers.stream().filter(c -> c.dead != true).toArray();
+						subscribers = new ArrayList<Client>(Arrays.asList(x)); 
+					}
+				}
+
+				client.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void Broadcast(Client c, String message) {
+		try {
+			Socket testSender = new Socket(c.address, c.port);
+			DataOutputStream toServer = new DataOutputStream(testSender.getOutputStream());
+			toServer.writeBytes(message);
+			
+		} catch (UnknownHostException e) {
+			// The socket doesn't work
+			c.dead = true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	class Client {
+		String address;
+		int port;
+		boolean dead;
+		public Client(String a, int p) {
+			this.dead = false;
+			this.address = a;
+			this.port = p;
+		}
+	}
+	
+	public static void main(String[] args) {
+		new Thread(() -> new AwesomeServer()).start();
+		try {
+			Socket testSender = new Socket("127.0.0.1", 7777);
+			DataOutputStream toServer = new DataOutputStream(testSender.getOutputStream());
+			toServer.writeBytes("subssdscribe \n");
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+}

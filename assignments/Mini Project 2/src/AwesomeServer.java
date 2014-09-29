@@ -54,7 +54,7 @@ public class AwesomeServer {
 	
 			client.close();
 		} catch(IOException e) {
-			System.out.println("and error happened in the listen method");
+			System.out.println("An error occured when establishing attempting to connect to sink. Probably busy... ");
 		}
 	}
 	

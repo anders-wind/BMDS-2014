@@ -8,27 +8,11 @@ public class Sink {
 	private int localPort;
 	private String h;
 
-	public Sink() {
-		h = "";
+	public Sink(String address) {
+		h = address;
 		//test();
 		makeConnection();
 		getMessage();
-	}
-
-	private void test() {
-		localPort = 2000;
-		Thread testThread = new Thread() {
-			public void run() {
-				testInput();
-			}
-		};
-		Thread testThread2 = new Thread() {
-			public void run() {
-				getMessage();
-			}
-		};
-		testThread2.start();
-		testThread.start();
 	}
 
 	private void makeConnection() {
@@ -85,8 +69,24 @@ public class Sink {
 			e.printStackTrace();
 		}
 	}
+	
+	private void test() {
+		localPort = 2000;
+		Thread testThread = new Thread() {
+			public void run() {
+				testInput();
+			}
+		};
+		Thread testThread2 = new Thread() {
+			public void run() {
+				getMessage();
+			}
+		};
+		testThread2.start();
+		testThread.start();
+	}
 
 	public static void main(String[] args) {
-		new Sink();
+		new Sink("");
 	}
 }

@@ -5,6 +5,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 public class AwesomeServer {
@@ -12,40 +14,47 @@ public class AwesomeServer {
 	private ArrayList<Client> subscribers; 
 	
 	public AwesomeServer() {
-		subscribers = new ArrayList<>();
+		subscribers = new ArrayList<Client>();
 		 
 		try {
 			ServerSocket s = new ServerSocket(7777);
-			Socket client;
 			while(true) {
-				client = s.accept();
-				DataOutputStream toServer = new DataOutputStream(client.getOutputStream());
-				DataInputStream fromServer = new DataInputStream(client.getInputStream());
-				
-				String line = fromServer.readLine();
-				toServer.writeBytes("ok \n");
-				if(line.contains("subscribe")) {
-					// new subscriber, add to list
-					String[] split = client.getRemoteSocketAddress().toString().split(":");
-					String caddress = split[0].substring(1, split[0].length());
-					int cport = Integer.parseInt(split[1]);
-					subscribers.add(new Client(caddress, cport));
-				} else {
-					// not a subscribe. publish
-					if(subscribers.isEmpty()) {
-						System.out.println("No subscribers available");
-					} else {
-						subscribers.stream().forEach(c -> broadcast(c, line));
-						// This might throw an exception
-						//Client[] x = (Client[]) subscribers.stream().filter(c -> !c.dead).toArray();
-						//subscribers = new ArrayList<>(Arrays.asList(x));
-					}
-				}
-
-				client.close();
+				listen(s);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private void listen(ServerSocket s) {
+		try {
+			Socket client = s.accept();
+			DataOutputStream toServer = new DataOutputStream(client.getOutputStream());
+			DataInputStream fromServer = new DataInputStream(client.getInputStream());
+			
+			String line = fromServer.readLine();
+			toServer.writeBytes("ok \n");
+			if(line.contains("subscribe")) {
+				// new subscriber, add to list
+				String[] split = client.getRemoteSocketAddress().toString().split(":");
+				String caddress = split[0].substring(1, split[0].length());
+				int cport = Integer.parseInt(split[1]);
+				subscribers.add(new Client(caddress, cport));
+			} else {
+				// not a subscribe. publish
+				if(subscribers.isEmpty()) {
+					System.out.println("No subscribers available");
+				} else {
+					subscribers.stream().forEach(c -> broadcast(c, line));
+					subscribers = subscribers.stream()
+							.filter(c -> !c.dead)
+							.collect(Collectors.toCollection(ArrayList::new));
+				}
+			}
+	
+			client.close();
+		} catch(IOException e) {
+			System.out.println("and error happened in the listen method");
 		}
 	}
 	
@@ -57,6 +66,7 @@ public class AwesomeServer {
 			testSender.close();
 		} catch (IOException e) {
 			// The socket doesn't work.
+			System.out.println("the endpoint doesn't exist");
 			c.dead = true;
 		}
 	}

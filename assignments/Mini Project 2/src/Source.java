@@ -44,7 +44,9 @@ public class Source {
             }
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			//Try to reconnect.
+            System.out.println("Connection failed. Reconnecting...");
+            connectoToServer(address);
 		}
 	}
 

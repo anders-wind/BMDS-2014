@@ -13,7 +13,7 @@ public class AwesomeServer {
 	private ArrayList<Client> subscribers; 
 	
 	public AwesomeServer() {
-		subscribers = new ArrayList<Client>();
+		subscribers = new ArrayList<>();
 		 
 		try {
 			ServerSocket s = new ServerSocket(7777);
@@ -38,7 +38,7 @@ public class AwesomeServer {
 						subscribers.stream().forEach(c -> broadcast(c, line));
 						// This might throw an exception
 						Client[] x = (Client[]) subscribers.stream().filter(c -> !c.dead).toArray();
-						subscribers = new ArrayList<Client>(Arrays.asList(x)); 
+						subscribers = new ArrayList<>(Arrays.asList(x));
 					}
 				}
 
@@ -54,13 +54,9 @@ public class AwesomeServer {
 			Socket testSender = new Socket(c.address, c.port);
 			DataOutputStream toServer = new DataOutputStream(testSender.getOutputStream());
 			toServer.writeBytes(message);
-			
-		} catch (UnknownHostException e) {
+		} catch (IOException e) {
 			// The socket doesn't work
 			c.dead = true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
@@ -84,7 +80,6 @@ public class AwesomeServer {
 			DataOutputStream toServer = new DataOutputStream(testSender.getOutputStream());
 			toServer.writeBytes("subssdscribe \n");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

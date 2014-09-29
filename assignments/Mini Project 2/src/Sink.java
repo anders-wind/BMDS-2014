@@ -27,7 +27,7 @@ public class Sink {
 			DataInputStream in = new DataInputStream(theServer.getInputStream());
 			in.readLine();
 			
-			System.out.println("---------\nConnection to AwesomeServer was succesfull\n---------\n");
+			System.out.println("---------\nConnection to AwesomeServer was successfull\n---------\n");
 			
 			localPort = theServer.getLocalPort();
 			theServer.close();
@@ -51,7 +51,12 @@ public class Sink {
 				DataInputStream in = new DataInputStream(
 						connection.getInputStream());
 				String messageFromSource = in.readLine();
-				System.out.println(messageFromSource);
+				
+                if (messageFromSource == null) {
+                    messageFromSource = "";
+                }
+
+                System.out.println(messageFromSource);
 				connection.close();
 			}
 		} catch (Exception e) {

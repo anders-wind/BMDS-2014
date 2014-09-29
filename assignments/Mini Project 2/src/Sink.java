@@ -51,7 +51,7 @@ public class Sink {
 				DataInputStream in = new DataInputStream(
 						connection.getInputStream());
 				String messageFromSource = in.readLine();
-				
+
                 if (messageFromSource == null) {
                     messageFromSource = "";
                 }
@@ -61,7 +61,7 @@ public class Sink {
 			}
 		} catch (Exception e) {
 			//tStackTrace();
-			System.out.println("Connection to AwesomeServer failed...\nTrying again");
+			System.out.println("Connection to server failed.!\nTrying again...");
 			makeConnection();
 		}
 	}

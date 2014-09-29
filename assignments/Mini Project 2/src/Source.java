@@ -23,7 +23,7 @@ public class Source {
 
             // Send user input to the server.
             String userInput = "";
-            while (!userInput.equals("exit")) {
+            while (!userInput.equals("Quit")) {
                 userInput = userIn.readLine();
 
                 // Establish connection.
@@ -45,8 +45,8 @@ public class Source {
 
 		} catch (Exception e) {
 			//Try to reconnect.
-            System.out.println("                                    |    Connection failed! Reconnecting...  |");
-            System.out.println("                                    |    Try sending your message again.     |");
+            System.out.println("                                     |    Connection failed! Reconnecting...  |");
+            System.out.println("                                     |    Try sending your message again.     |");
             connectoToServer(address);
 		}
 	}

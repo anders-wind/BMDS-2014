@@ -3,7 +3,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -55,7 +54,7 @@ public class AwesomeServer {
 			DataOutputStream toServer = new DataOutputStream(testSender.getOutputStream());
 			toServer.writeBytes(message);
 		} catch (IOException e) {
-			// The socket doesn't work
+			// The socket doesn't work.
 			c.dead = true;
 		}
 	}

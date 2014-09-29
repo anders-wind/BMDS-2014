@@ -29,7 +29,7 @@ public class Source {
 				userInput = userIn.readLine();
 
 				if (userInput != null) {
-					outToServer.write(userInput);
+					outToServer.write(userInput + "\n");
 				}
 			}
 		} catch (Exception e) {

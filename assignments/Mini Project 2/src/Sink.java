@@ -19,7 +19,7 @@ public class Sink {
 		try {
 			String message = "subscribe \n"; // port:" + localPort + "\n";
 
-			Socket theServer = new Socket("localhost", 7777);
+			Socket theServer = new Socket(h, 7777);
 			DataOutputStream out = new DataOutputStream(
 					theServer.getOutputStream());
 			out.writeBytes(message);
@@ -52,6 +52,13 @@ public class Sink {
 		}
 	}
 
+	
+	public static void main(String[] args) {
+		new Sink("localhost");
+	}
+	
+	
+	
 	public void testInput() {
 		try {
 			String message = "subscribe - port:" + localPort + "\n";
@@ -84,9 +91,5 @@ public class Sink {
 		};
 		testThread2.start();
 		testThread.start();
-	}
-
-	public static void main(String[] args) {
-		new Sink("");
 	}
 }

@@ -35,8 +35,8 @@ public class Sink {
 	}
 
 	private void getMessage() {
-		ServerSocket socket = null;
-		Socket connection = null;
+		ServerSocket socket;
+		Socket connection;
 		try {
 			socket = new ServerSocket(localPort);
 			while (true) {

@@ -83,8 +83,6 @@ public class AwesomeServer {
 			Socket testSender = new Socket("127.0.0.1", 7777);
 			DataOutputStream toServer = new DataOutputStream(testSender.getOutputStream());
 			toServer.writeBytes("subssdscribe \n");
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -65,10 +65,11 @@ public class AwesomeServer {
 	}
 	
 	
-	class Client {
-		String address;
-		int port;
-		boolean dead;
+	private class Client {
+		private String address;
+		private int port;
+		private boolean dead;
+
 		public Client(String a, int p) {
 			this.dead = false;
 			this.address = a;

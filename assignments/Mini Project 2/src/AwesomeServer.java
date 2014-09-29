@@ -78,7 +78,7 @@ public class AwesomeServer {
 	}
 	
 	public static void main(String[] args) {
-		new Thread(() -> new AwesomeServer()).start();
+		new Thread(AwesomeServer::new).start();
 		try {
 			Socket testSender = new Socket("127.0.0.1", 7777);
 			DataOutputStream toServer = new DataOutputStream(testSender.getOutputStream());

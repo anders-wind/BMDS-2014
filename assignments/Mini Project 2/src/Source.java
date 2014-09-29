@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -28,11 +29,13 @@ public class Source {
                 // Establish connection.
                 Socket serverConnection = new Socket(address, 7777);
 
-                PrintWriter outToServer = new PrintWriter(
-                        serverConnection.getOutputStream(), true);
+                DataOutputStream outToServer = new DataOutputStream(
+                        serverConnection.getOutputStream());
 
                 //Send the message and close the connection.
-                outToServer.write(userInput + "\n");
+                outToServer.writeBytes(userInput + "\n");
+                int delivered = serverConnection.getInputStream().read();
+
                 serverConnection.close();
             }
 

@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -28,11 +29,13 @@ public class Source {
                 // Establish connection.
                 Socket serverConnection = new Socket(address, 7777);
 
-                PrintWriter outToServer = new PrintWriter(
-                        serverConnection.getOutputStream(), true);
+                DataOutputStream outToServer = new DataOutputStream(
+                        serverConnection.getOutputStream());
 
                 //Send the message and close the connection.
-                outToServer.write(userInput + "\n");
+                outToServer.writeBytes(userInput + "\n");
+                int delivered = serverConnection.getInputStream().read();
+
                 serverConnection.close();
             }
 
@@ -42,27 +45,8 @@ public class Source {
 	}
 
 	public static void main(String[] args) {
-
-		Runnable r = () -> {
-			// For testing. Create a simple server, print out everything it has
-			// received.
-			try {
-				ServerSocket server = new ServerSocket(7777);
-				Socket s = server.accept();
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						s.getInputStream()));
-
-				String serverIn;
-				while ((serverIn = in.readLine()) != null) {
-					System.out.println(serverIn);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		};
-
 		// Create a Source and connect it to the server.
-		Runnable r2 = () -> {
+		Runnable r = () -> {
 			try {
 				new Source("localhost");
 			} catch (Exception e) {
@@ -71,6 +55,5 @@ public class Source {
 		};
 
 		new Thread(r).start();
-		new Thread(r2).start();
 	}
 }

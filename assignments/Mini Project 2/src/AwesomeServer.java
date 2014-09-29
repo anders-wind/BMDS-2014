@@ -19,16 +19,16 @@ public class AwesomeServer {
 		try {
 			ServerSocket s = new ServerSocket(7777);
 			while(true) {
-				listen(s);
+				Socket c = s.accept();
+				new Thread(() -> listen(c)).start();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void listen(ServerSocket s) {
+	private void listen(Socket client) {
 		try {
-			Socket client = s.accept();
 			DataOutputStream toServer = new DataOutputStream(client.getOutputStream());
 			DataInputStream fromServer = new DataInputStream(client.getInputStream());
 			

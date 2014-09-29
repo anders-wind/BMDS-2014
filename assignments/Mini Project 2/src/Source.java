@@ -43,26 +43,8 @@ public class Source {
 
 	public static void main(String[] args) {
 
-		Runnable r = () -> {
-			// For testing. Create a simple server, print out everything it has
-			// received.
-			try {
-				ServerSocket server = new ServerSocket(7777);
-				Socket s = server.accept();
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						s.getInputStream()));
-
-				String serverIn;
-				while ((serverIn = in.readLine()) != null) {
-					System.out.println(serverIn);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		};
-
 		// Create a Source and connect it to the server.
-		Runnable r2 = () -> {
+		Runnable r = () -> {
 			try {
 				new Source("localhost");
 			} catch (Exception e) {
@@ -70,7 +52,7 @@ public class Source {
 			}
 		};
 
+		//new Thread(r).start();
 		new Thread(r).start();
-		new Thread(r2).start();
 	}
 }

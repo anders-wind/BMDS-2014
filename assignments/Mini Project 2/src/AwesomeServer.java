@@ -37,7 +37,7 @@ public class AwesomeServer {
 					} else {
 						subscribers.stream().forEach(c -> broadcast(c, line));
 						// This might throw an exception
-						Client[] x = (Client[]) subscribers.stream().filter(c -> c.dead != true).toArray();
+						Client[] x = (Client[]) subscribers.stream().filter(c -> !c.dead).toArray();
 						subscribers = new ArrayList<Client>(Arrays.asList(x)); 
 					}
 				}

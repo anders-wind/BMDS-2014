@@ -33,6 +33,7 @@ public class Source {
                         serverConnection.getOutputStream());
 
                 //Send the message and close the connection if delivered.
+                //Otherwise retry.
                 int delivered = -1;
                 while (delivered == -1) {
                     outToServer.writeBytes(userInput + "\n");

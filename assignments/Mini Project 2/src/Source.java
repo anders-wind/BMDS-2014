@@ -32,9 +32,13 @@ public class Source {
                 DataOutputStream outToServer = new DataOutputStream(
                         serverConnection.getOutputStream());
 
-                //Send the message and close the connection.
-                outToServer.writeBytes(userInput + "\n");
-                int delivered = serverConnection.getInputStream().read();
+                //Send the message and close the connection if delivered.
+                //Otherwise retry.
+                int delivered = -1;
+                while (delivered == -1) {
+                    outToServer.writeBytes(userInput + "\n");
+                    delivered = serverConnection.getInputStream().read();
+                }
 
                 serverConnection.close();
             }

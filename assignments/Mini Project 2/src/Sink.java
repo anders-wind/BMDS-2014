@@ -11,24 +11,19 @@ public class Sink {
 	public Sink() {
 		h = "";
 		test();
-		//makeConnection();
-		//getMessage();
+		// makeConnection();
+		// getMessage();
 	}
-	
-	private void test()
-	{
+
+	private void test() {
 		localPort = 2000;
-		Thread testThread = new Thread()
-		{
-			public void run() 
-			{
+		Thread testThread = new Thread() {
+			public void run() {
 				testInput();
 			}
 		};
-		Thread testThread2 = new Thread()
-		{
-			public void run() 
-			{
+		Thread testThread2 = new Thread() {
+			public void run() {
 				getMessage();
 			}
 		};
@@ -38,7 +33,7 @@ public class Sink {
 
 	private void makeConnection() {
 		try {
-			String message = "subscribe \n"; //port:" + localPort + "\n";
+			String message = "subscribe \n"; // port:" + localPort + "\n";
 
 			Socket theServer = new Socket("localhost", 7777);
 			DataOutputStream out = new DataOutputStream(
@@ -47,7 +42,7 @@ public class Sink {
 
 			DataInputStream in = new DataInputStream(theServer.getInputStream());
 			String okMessage = in.readLine();
-			
+
 			localPort = theServer.getLocalPort();
 			theServer.close();
 		} catch (Exception e) {
@@ -72,7 +67,7 @@ public class Sink {
 		}
 
 	}
-	
+
 	public void testInput() {
 		try {
 			String message = "subscribe - port:" + localPort + "\n";
@@ -81,17 +76,16 @@ public class Sink {
 			DataOutputStream out = new DataOutputStream(
 					theServer.getOutputStream());
 			out.writeBytes(message);
-			
+
 			int i = 0;
-			while(true)
-			{
+			while (true) {
 				out.writeBytes(message + " " + i++);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		new Sink();
 	}

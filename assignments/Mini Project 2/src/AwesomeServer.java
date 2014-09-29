@@ -1,17 +1,11 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import sun.nio.ch.SocketAdaptor;
 
 
 public class AwesomeServer {
@@ -41,7 +35,7 @@ public class AwesomeServer {
 					if(subscribers.isEmpty()) {
 						System.out.println("No subscribers available");
 					} else {
-						subscribers.stream().forEach(c -> Broadcast(c, line));
+						subscribers.stream().forEach(c -> broadcast(c, line));
 						// This might throw an exception
 						Client[] x = (Client[]) subscribers.stream().filter(c -> c.dead != true).toArray();
 						subscribers = new ArrayList<Client>(Arrays.asList(x)); 
@@ -55,7 +49,7 @@ public class AwesomeServer {
 		}
 	}
 	
-	public void Broadcast(Client c, String message) {
+	public void broadcast(Client c, String message) {
 		try {
 			Socket testSender = new Socket(c.address, c.port);
 			DataOutputStream toServer = new DataOutputStream(testSender.getOutputStream());

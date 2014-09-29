@@ -39,17 +39,17 @@ public class Sink {
 		Socket connection = null;
 		try {
 			socket = new ServerSocket(localPort);
-			connection = socket.accept();
 			while (true) {
+				connection = socket.accept();
 				DataInputStream in = new DataInputStream(
 						connection.getInputStream());
 				String messageFromSource = in.readLine();
 				System.out.println(messageFromSource);
+				connection.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public void testInput() {

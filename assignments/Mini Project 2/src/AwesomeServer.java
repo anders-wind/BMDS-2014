@@ -85,6 +85,6 @@ public class AwesomeServer {
 	}
 	
 	public static void main(String[] args) {
-		new Thread(AwesomeServer::new).start();		
+		new AwesomeServer();			
 	}
 }

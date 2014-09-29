@@ -10,9 +10,9 @@ public class Sink {
 
 	public Sink() {
 		h = "";
-		test();
-		// makeConnection();
-		// getMessage();
+		//test();
+		makeConnection();
+		getMessage();
 	}
 
 	private void test() {

@@ -45,7 +45,8 @@ public class Source {
 
 		} catch (Exception e) {
 			//Try to reconnect.
-            System.out.println("Connection failed. Reconnecting...");
+            System.out.println("                                    |    Connection failed! Reconnecting...  |");
+            System.out.println("                                    |    Try sending your message again.     |");
             connectoToServer(address);
 		}
 	}

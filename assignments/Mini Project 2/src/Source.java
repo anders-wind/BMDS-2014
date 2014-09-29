@@ -16,22 +16,26 @@ public class Source {
 
 	private void connectoToServer(String address) {
 		try {
-			// Establish connections.
-			Socket serverConnection = new Socket(address, 7777);
-			BufferedReader userIn = new BufferedReader((new InputStreamReader(
-					System.in)));
-			PrintWriter outToServer = new PrintWriter(
-					serverConnection.getOutputStream(), true);
+            //Set up receiving of user input.
+            BufferedReader userIn = new BufferedReader((new InputStreamReader(
+                    System.in)));
 
-			// Send user input to the server.
-			String userInput;
-			while (true) {
-				userInput = userIn.readLine();
+            // Send user input to the server.
+            String userInput = "";
+            while (!userInput.equals("exit")) {
+                userInput = userIn.readLine();
 
-				if (userInput != null) {
-					outToServer.write(userInput + "\n");
-				}
-			}
+                // Establish connection.
+                Socket serverConnection = new Socket(address, 7777);
+
+                PrintWriter outToServer = new PrintWriter(
+                        serverConnection.getOutputStream(), true);
+
+                //Send the message and close the connection.
+                outToServer.write(userInput + "\n");
+                serverConnection.close();
+            }
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

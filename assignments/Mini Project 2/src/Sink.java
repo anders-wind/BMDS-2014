@@ -30,7 +30,9 @@ public class Sink {
 			localPort = theServer.getLocalPort();
 			theServer.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("Connection to AwesomeServer failed\nSink will terminate");
+			System.exit(0);
 		}
 	}
 

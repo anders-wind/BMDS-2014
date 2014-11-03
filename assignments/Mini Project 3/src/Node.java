@@ -94,6 +94,9 @@ public class Node {
     	{
     		setMessage(Integer.parseInt(input[1].trim()), input[2].trim());
     	}
+    	else{
+    		System.out.println("Parser no comprehendi la cody");
+    	}
     }
 
     /**

@@ -1,3 +1,5 @@
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 /**
  * "A "Get-client" process takes arguments the IP/port of a Node, and an integer key.
  * It submits a GET(key, ip2, port2) message to the indicated Node,
@@ -11,7 +13,6 @@ public class Get {
     }
 
     public String get(int key, String ip, int port2) {
-
-        return "";
+        throw new NotImplementedException();
     }
 }

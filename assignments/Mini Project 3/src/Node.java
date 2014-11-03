@@ -104,11 +104,11 @@ public class Node {
     /**
      * Instantiate a Node with a given port and optionally a neighbour Node.
      * @param args Port(s) for a Node and optionally the port of its neighbour.
-     * @throws InvalidArgumentException If no port for the Node is given.
+     * @throws IllegalArgumentException If no port for the Node is given.
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if (args[0] == null) {
-            throw new IllegalArgumentException(args);
+            throw new IllegalArgumentException();
         }
 
         else if (args[1] == null) {

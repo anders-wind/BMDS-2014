@@ -1,3 +1,4 @@
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -26,7 +27,7 @@ public class Node {
         this.message = message;
     }
 
-    public void checkForMessage(int messageKey, int getterPort) {
+    public void getMessage(int messageKey, int getterPort) {
         if (this.messageKey == messageKey) {
             Put.put(getterPort, messageKey, message);
         }
@@ -40,5 +41,18 @@ public class Node {
         if (otherPort != 0) {
             Get.get(messageKey, otherPort, originalPort);
         }
+    }
+
+    public static void main(String[] args) throws InvalidArgumentException {
+        if (args[0] == null) {
+            throw new InvalidArgumentException(args);
+        }
+
+        else if (args[1] == null) {
+            new Node(Integer.parseInt(args[0]), 0);
+            return;
+        }
+
+        new Node(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
     }
 }

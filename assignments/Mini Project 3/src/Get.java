@@ -1,13 +1,64 @@
+import java.io.BufferedReader;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutput;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.io.BufferedReader;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Created by Anders on 03/11/14.
  */
 public class Get {
-    public static String get(int messageKey, int portToGetFrom, int portToReceiveTo) {
-        //Open own port, get the specified message from a starting Node.
-        //If the Node doesn't have the message, check the network of Nodes.
+    public static void get(int messageKey, int portToGetFrom, int portToReceiveTo) {
+    	String message = "GET:" + messageKey + ":" + portToReceiveTo + " \n";
+    	
+    	try {
+	    	Socket nodeSocket 			= new Socket("localhost", portToGetFrom);
+	    	BufferedReader fromNode		= new BufferedReader(new InputStreamReader(nodeSocket.getInputStream()));
+	    	DataOutputStream toNode		= new DataOutputStream(nodeSocket.getOutputStream());
+	    	toNode.writeBytes(message);
+	    	fromNode.readLine(); // blocking till the receiver has read my stuff
+	    	nodeSocket.close();
+    	} catch(Exception e) {
+    		System.out.println(">> error happened in get method");
+    	}
+    }
+    
+    public static void handleResponse(ServerSocket socket) {
+    	try {
+	    	//waiting for answer
+	    	Socket reply = socket.accept();    	
+	    	
+	    	BufferedReader fromAnswerNode = new BufferedReader(new InputStreamReader(reply.getInputStream()));
+	    	DataOutputStream toAnswerNode = new DataOutputStream(reply.getOutputStream());
+	    	
+	    	String output = fromAnswerNode.readLine();
+	    	toAnswerNode.writeBytes("Tjek \n");
+	    	
+	    	// All its done. Peace out - Hasta la vista baby.
+	    	reply.close();
+	    	System.out.println(output + " \n");
+    	} catch(Exception e) {
+    		System.out.println(">> Something whent wrong when trying to handleResponse");
+    	}
 
-        throw new NotImplementedException();
+    }
+
+    public static void main(String[] args) throws Exception {
+    	int key 			= Integer.parseInt(args[0]);
+    	int nodePort	 	= Integer.parseInt(args[1]);
+
+    	int myPort = 6666; // hardcoded yes
+    	ServerSocket replySocket = new ServerSocket(myPort);
+    	new Thread(() -> handleResponse(replySocket)).start(); // Open socket to get replied to
+    	
+    	
+    	get(key, nodePort, myPort);
     }
 }

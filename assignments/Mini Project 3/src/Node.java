@@ -12,11 +12,11 @@ public class Node {
         key = ownKey;
     }
 
-    public String get(int messageKey, int getFromPort, int receiveToPort) {
+    public String get(int messageKey, int portToGetFrom, int portToReceiveTo) {
         throw new NotImplementedException();
     }
 
-    public void put(int messageKey, String valueToPut) {
-
+    public void put(int portToSendTo, int messageKey, String messageToPut) {
+        
     }
 }

@@ -1,5 +1,6 @@
 /**
- * Created by Anders on 03/11/14.
+ * "A "Put-client" process takes as arguments the IP/port of a Node, an integer key, and a string value.
+ * The client then submits a PUT(key, value) message to the indicated node and terminates."
  */
 public class Put {
 

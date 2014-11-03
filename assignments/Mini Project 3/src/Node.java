@@ -21,18 +21,14 @@ public class Node {
     private int otherPort;
 
     /**
-     * Create a node that will listen on a given port.
-     */
-    public Node(int ownPort) {
-        this.ownPort = ownPort;
-
-    }
-
-    /**
      * Optionally create a Node that knows of another Node.
      */
     public Node(int ownPort, int otherPort) {
+        //Open own port, and optionally know about a neighbour Node.
         this.ownPort = ownPort;
-        this.otherPort = otherPort;
+
+        if (otherPort != 0) {
+            this.otherPort = otherPort;
+        }
     }
 }

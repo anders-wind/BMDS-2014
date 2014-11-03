@@ -1,4 +1,3 @@
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -54,5 +53,19 @@ public class Node {
         }
 
         new Node(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+    }
+    
+    
+    private void parseInput(String getMessage)
+    {
+    	String[] input = getMessage.split(":");
+    	if(input[0].equals("Get"))
+    	{
+    		
+    	}
+    	else if(input[0].equals("Put"))
+    	{
+    		
+    	}
     }
 }

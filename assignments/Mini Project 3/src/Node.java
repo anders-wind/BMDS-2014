@@ -6,6 +6,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class Node {
     private int ownPort;
     private int otherPort;
+    private int messageKey;
+    private String message;
 
     /**
      * Optionally create a Node that knows of another Node.
@@ -16,6 +18,16 @@ public class Node {
 
         if (otherPort != 0) {
             this.otherPort = otherPort;
+        }
+    }
+
+    public void checkForMessage(int messageKey, int getterPort) {
+        if (this.messageKey == messageKey) {
+            Put.put(getterPort, messageKey, message);
+        }
+
+        else {
+            forward(messageKey, getterPort);
         }
     }
 

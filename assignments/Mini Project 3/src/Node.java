@@ -11,7 +11,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class Node {
     private int ownPort;
     private int otherPort;
-    private HashMap<Integer,String> resources = new HashMap<Integer, String>();
+    private HashMap<Integer, String> resources = new HashMap<Integer, String>();
     private String message;
 
     /**
@@ -30,7 +30,7 @@ public class Node {
      * Set the message of this node.
      */
     public void setMessage(int messageKey, String message) {
-    	resources.put(messageKey,message);
+    	resources.put(messageKey, message);
     }
 
     /**
@@ -38,8 +38,8 @@ public class Node {
      * other Nodes in the network.
      */
     public void getMessage(int messageKey, int getterPort) {
-        if (this.messageKey == messageKey) {
-            Put.put(getterPort, messageKey, message);
+        if (resources.containsKey(messageKey)) {
+            Put.put(getterPort, messageKey, resources.get(messageKey));
         }
 
         else {

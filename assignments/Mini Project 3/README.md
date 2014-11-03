@@ -36,11 +36,19 @@ If the network of Nodes receives inconsistent PUTs, (e.g., PUT(1, A) then later 
 	- a distributed hash table implementation?
 		No. But by doing so one could achieve a Structered P2P system.
 2. What is the average-case, best-case, and worst-case space consumed at each Node?
+	E is the amount of Puts(messages), N is the amount of nodes. 
+	Worst Case for each Node is E where all messages are on one single node. 
+	Best Case for each Node is 0 where all messages are on other nodes.
+	Average Case for each Node is E/N such that all nodes have an equal amount of the messages
 3. What is the average-case, best-case and worst-case number and size of messages being sent as a result of 
 	- A PUT message from a client, and
+		The Put message is called to a single node and therefore the amount of messages are constant for all three cases.
 	- A successful GET message from a client (that is, a value is found and sent back.)
+		Worst case O(N), averagecase O(N) or N/2 and best case is 1.
 	- An unsuccessful GET message from a client (that is, no value is found.)
+		For all cases the result is infinite. DONT KNOW IF THIS IS TRUE
 4. Based on 2 and 3, write a paragraph or two on the current scalability of your system. 
+	The scalability is quite poor riht now. In case of failure the system is almost unusable and for a few thousand peers the system will also get too slow to use.
 5. Based on 2, 3 and 4, give suggestions for improving the scalability of your system. 
 
 #Part B 

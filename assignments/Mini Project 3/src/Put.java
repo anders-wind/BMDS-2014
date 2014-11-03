@@ -4,7 +4,7 @@
  */
 public class Put {
 
-    public Put(String IP, int key, String value) {
+    public Put(String ip, int key, String value) {
 
     }
 

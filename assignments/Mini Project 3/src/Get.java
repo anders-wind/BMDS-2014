@@ -6,5 +6,12 @@
  * that some Put-client previously issued that PUT."
  */
 public class Get {
+    public Get(String ip, int key) {
 
+    }
+
+    public String get(int key, String ip, int port2) {
+
+        return "";
+    }
 }

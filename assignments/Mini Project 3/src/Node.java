@@ -1,4 +1,7 @@
+import java.util.HashMap;
+
 import com.sun.javaws.exceptions.InvalidArgumentException;
+
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -7,7 +10,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class Node {
     private int ownPort;
     private int otherPort;
-    private int messageKey;
+    private HashMap<Integer,String> resources = new HashMap<Integer, String>();
     private String message;
 
     /**
@@ -23,8 +26,7 @@ public class Node {
     }
 
     public void setMessage(int messageKey, String message) {
-        this.messageKey = messageKey;
-        this.message = message;
+    	resources.put(messageKey,message);
     }
 
     public void getMessage(int messageKey, int getterPort) {

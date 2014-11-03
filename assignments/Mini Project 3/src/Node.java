@@ -53,17 +53,22 @@ public class Node {
         }
     }
     
-    
+    /**
+     * Finished the Parser.
+	 *	Get: messageKey : getterPort
+	 *	Put: messageKey : Message
+     * @param getMessage
+     */
     private void parseInput(String getMessage)
     {
     	String[] input = getMessage.split(":");
     	if(input[0].equals("Get"))
     	{
-    		
+    		getMessage(Integer.parseInt(input[1].trim()),Integer.parseInt(input[2].trim()));
     	}
     	else if(input[0].equals("Put"))
     	{
-    		
+    		setMessage(Integer.parseInt(input[1].trim()), input[2].trim());
     	}
     }
 

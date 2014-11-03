@@ -11,7 +11,7 @@ public class Node {
     private String message;
 
     /**
-     * Optionally create a Node that knows of another Node.
+     * Create a Node that might optionally know about another Node in the network.
      */
     public Node(int ownPort, int otherPort) {
         //Open own port, and optionally know about a neighbour Node.
@@ -22,11 +22,18 @@ public class Node {
         }
     }
 
+    /**
+     * Set the message of this node.
+     */
     public void setMessage(int messageKey, String message) {
         this.messageKey = messageKey;
         this.message = message;
     }
 
+    /**
+     * Try to get the message of this node. If this node doesn't have the message then it forwards the request to the
+     * other Nodes in the network.
+     */
     public void getMessage(int messageKey, int getterPort) {
         if (this.messageKey == messageKey) {
             Put.put(getterPort, messageKey, message);
@@ -37,6 +44,9 @@ public class Node {
         }
     }
 
+    /**
+     * Forward the GET-request to the neighbour Node if this Node knows about it.
+     */
     private void forward(int messageKey, int originalPort) {
         if (otherPort != 0) {
             Get.get(messageKey, otherPort, originalPort);
@@ -57,6 +67,11 @@ public class Node {
     	}
     }
 
+    /**
+     * Instantiate a Node with a given port and optionally a neighbour Node.
+     * @param args Port(s) for a Node and optionally the port of its neighbour.
+     * @throws InvalidArgumentException If no port for the Node is given.
+     */
     public static void main(String[] args) throws InvalidArgumentException {
         if (args[0] == null) {
             throw new InvalidArgumentException(args);

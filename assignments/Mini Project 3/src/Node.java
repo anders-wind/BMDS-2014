@@ -24,4 +24,18 @@ public class Node {
             Get.get(messageKey, otherPort, originalPort);
         }
     }
+    
+    
+    private void parseInput(String getMessage)
+    {
+    	String[] input = getMessage.split(":");
+    	if(input[0].equals("Get"))
+    	{
+    		
+    	}
+    	else if(input[0].equals("Put"))
+    	{
+    		
+    	}
+    }
 }

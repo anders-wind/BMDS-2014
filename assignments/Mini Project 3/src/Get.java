@@ -49,9 +49,11 @@ public class Get {
 
     	int myPort = 6666; // hardcoded yes
     	ServerSocket replySocket = new ServerSocket(myPort);
-    	new Thread(() -> handleResponse(replySocket)).start(); // Open socket to get replied to
-    	
-    	
+    	Thread t = new Thread(() -> handleResponse(replySocket)); // Open socket to get replied to
+    	t.start();
     	get(key, nodePort, myPort);
+    	Thread.sleep(5);
+    	t.stop(); // horrible way to do this.
+    	System.out.println(">> Timeout on response from peer/node.");
     }
 }

@@ -50,6 +50,7 @@ If the network of Nodes receives inconsistent PUTs, (e.g., PUT(1, A) then later 
 4. Based on 2 and 3, write a paragraph or two on the current scalability of your system. 
 	The scalability is quite poor riht now. In case of failure the system is almost unusable and for a few thousand peers the system will also get too slow to use.
 5. Based on 2, 3 and 4, give suggestions for improving the scalability of your system. 
+	BY implementing a structured P2P system suh as the pastry structure one could improve the Get time and space consumption at the nodes. A Timeout functionality could make the system failsafe such that a constant and not infinite time consumption in case of a unsuccesfull GET. The Heartbeat functionality could improve the system in the case that a node leaves the system.
 
 #Part B 
 ####Enhance your Node processes of Part A such that the network is resilient to the loss of any one Node. Continuing the above example: 

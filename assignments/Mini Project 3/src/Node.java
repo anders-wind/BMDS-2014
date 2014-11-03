@@ -1,3 +1,7 @@
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.HashMap;
 
 import com.sun.javaws.exceptions.InvalidArgumentException;
@@ -15,11 +19,31 @@ public class Node {
      * Create a Node that might optionally know about another Node in the network.
      */
     public Node(int ownPort, int otherPort) {
+        try {
+            ServerSocket socket = new ServerSocket(ownPort);
+            while (true) {
+                Socket client = socket.accept();
+                new Thread(() -> handleMessage(client)).start();
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         //Open own port, and optionally know about a neighbour Node.
         this.ownPort = ownPort;
 
         if (otherPort != 0) {
             this.otherPort = otherPort;
+        }
+    }
+
+    private void handleMessage(Socket client){
+        try {
+            DataInputStream fromClient = new DataInputStream(client.getInputStream());
+            parseInput(fromClient.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

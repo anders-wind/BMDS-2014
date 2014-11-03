@@ -19,6 +19,13 @@ public class Node {
      * Create a Node that might optionally know about another Node in the network.
      */
     public Node(int ownPort, int otherPort) {
+        //Open own port, and optionally know about a neighbour Node.
+        this.ownPort = ownPort;
+
+        if (otherPort != 0) {
+            this.otherPort = otherPort;
+        }
+
         try {
             ServerSocket socket = new ServerSocket(ownPort);
             while (true) {
@@ -28,13 +35,6 @@ public class Node {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-        //Open own port, and optionally know about a neighbour Node.
-        this.ownPort = ownPort;
-
-        if (otherPort != 0) {
-            this.otherPort = otherPort;
         }
     }
 

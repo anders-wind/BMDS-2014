@@ -87,12 +87,12 @@ public class Node {
      */
     private void parseInput(String getMessage)
     {
-    	String[] input = getMessage.split(":");
-    	if(input[0].equals("Get"))
+    	String[] input = getMessage.toLowerCase().split(":");
+    	if(input[0].equals("get"))
     	{
     		getMessage(Integer.parseInt(input[1].trim()),Integer.parseInt(input[2].trim()));
     	}
-    	else if(input[0].equals("Put"))
+    	else if(input[0].equals("put"))
     	{
     		setMessage(Integer.parseInt(input[1].trim()), input[2].trim());
     	}

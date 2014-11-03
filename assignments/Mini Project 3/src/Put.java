@@ -17,7 +17,7 @@ public class Put {
 
 	public static void put(int key, String message, int port) {
 
-		String sendShit = "Put: " + key + ":" + message;
+		String sendShit = "PUT: " + key + ":" + message;
 
 		DataOutputStream dos = null;
 		DataInputStream dis = null;

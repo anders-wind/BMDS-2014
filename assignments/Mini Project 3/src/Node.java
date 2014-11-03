@@ -43,7 +43,12 @@ public class Node {
         }
     }
     
-    
+    /**
+     * Finished the Parser.
+	 *	Get: messageKey : getterPort
+	 *	Put: messageKey : Message
+     * @param getMessage
+     */
     private void parseInput(String getMessage)
     {
     	String[] input = getMessage.split(":");

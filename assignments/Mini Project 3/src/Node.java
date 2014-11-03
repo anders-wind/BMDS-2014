@@ -18,4 +18,10 @@ public class Node {
             this.otherPort = otherPort;
         }
     }
+
+    private void forward(int messageKey, int originalPort) {
+        if (otherPort != 0) {
+            Get.get(messageKey, otherPort, originalPort);
+        }
+    }
 }

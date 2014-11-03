@@ -21,6 +21,11 @@ public class Node {
         }
     }
 
+    public void setMessage(int messageKey, String message) {
+        this.messageKey = messageKey;
+        this.message = message;
+    }
+
     public void checkForMessage(int messageKey, int getterPort) {
         if (this.messageKey == messageKey) {
             Put.put(getterPort, messageKey, message);

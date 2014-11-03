@@ -38,7 +38,7 @@ If the network of Nodes receives inconsistent PUTs, (e.g., PUT(1, A) then later 
 4. Based on 2 and 3, write a paragraph or two on the current scalability of your system. 
 5. Based on 2, 3 and 4, give suggestions for improving the scalability of your system. 
 
-#Part B. 
+#Part B 
 ####Enhance your Node processes of Part A such that the network is resilient to the loss of any one Node. Continuing the above example: 
 
 Node 1025 crashes.

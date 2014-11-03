@@ -4,11 +4,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * Created by Anders on 03/11/14.
  */
 public class Get {
-    public Get(int keyToGetFrom, int portToGetFrom, int portToReceiveAt) {
-        System.out.println(get(keyToGetFrom, portToGetFrom, portToReceiveAt));
-    }
+    private static String get(int messageKey, int portToGetFrom, int portToReceiveTo) {
+        //Open own port, get the specified message from a starting Node.
+        //If the Node doesn't have the message, check the network of Nodes.
 
-    private String get(int messageKey, int portToGetFrom, int portToReceiveTo) {
         throw new NotImplementedException();
     }
 }

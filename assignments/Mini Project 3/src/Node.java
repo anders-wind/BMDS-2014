@@ -35,8 +35,4 @@ public class Node {
         this.ownPort = ownPort;
         this.otherPort = otherPort;
     }
-
-    public void put(int portToSendTo, int messageKey, String messageToPut) {
-
-    }
 }

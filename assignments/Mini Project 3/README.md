@@ -25,11 +25,16 @@ If the network of Nodes receives inconsistent PUTs, (e.g., PUT(1, A) then later 
 
 1. Is your system:
 	- a publish/subscribe system?
+		No. Nodes do not subscribe to anyone, but just listens. Instead a Node can have responsebility to send a message on to another node.
 	- a message Queue?
+		No. Since no queues or centrilized servers are involved.
 	- a structured P2P system?
+		No. The Get call takes O(N) time in the worst case, since nodes are connected in a long line, and not in a pastry format.
 	- an unstructured P2P system?
+		Yes. The system is a P2P system where nodes functions as peers. The System is unstructered since the Get function takes O(N) in the worst case.
 	- a distributed set implementation?
 	- a distributed hash table implementation?
+		No. But by doing so one could achieve a Structered P2P system.
 2. What is the average-case, best-case, and worst-case space consumed at each Node?
 3. What is the average-case, best-case and worst-case number and size of messages being sent as a result of 
 	- A PUT message from a client, and

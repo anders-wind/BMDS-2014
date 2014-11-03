@@ -25,7 +25,7 @@ public class Node {
      */
     public Node(int ownPort) {
         this.ownPort = ownPort;
-        //Git works?
+
     }
 
     /**
@@ -34,10 +34,6 @@ public class Node {
     public Node(int ownPort, int otherPort) {
         this.ownPort = ownPort;
         this.otherPort = otherPort;
-    }
-
-    public String get(int messageKey, int portToGetFrom, int portToReceiveTo) {
-        throw new NotImplementedException();
     }
 
     public void put(int portToSendTo, int messageKey, String messageToPut) {

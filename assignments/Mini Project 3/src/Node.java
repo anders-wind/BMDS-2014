@@ -1,8 +1,11 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.HashMap;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+//import com.sun.javaws.exceptions.InvalidArgumentException;
 
 /**
  * Create a Node on a given port.
@@ -11,8 +14,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class Node {
     private int ownPort;
     private int otherPort;
-    private HashMap<Integer,String> resources = new HashMap<Integer, String>();
-    private String message;
+    private HashMap<Integer, String> messages = new HashMap<Integer, String>();
 
     /**
      * Create a Node that might optionally know about another Node in the network.
@@ -24,13 +26,35 @@ public class Node {
         if (otherPort != 0) {
             this.otherPort = otherPort;
         }
+
+        try {
+            ServerSocket socket = new ServerSocket(ownPort);
+            while (true) {
+                Socket client = socket.accept();
+                new Thread(() -> handleMessage(client)).start();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handleMessage(Socket client){
+        try {
+            DataInputStream fromClient = new DataInputStream(client.getInputStream());
+            String input = (fromClient.readLine());
+            DataOutputStream toClient = new DataOutputStream(client.getOutputStream());
+            toClient.writeBytes("Tjek\n");
+            parseInput(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Set the message of this node.
      */
     public void setMessage(int messageKey, String message) {
-    	resources.put(messageKey,message);
+    	messages.put(messageKey, message);
     }
 
     /**
@@ -38,10 +62,9 @@ public class Node {
      * other Nodes in the network.
      */
     public void getMessage(int messageKey, int getterPort) {
-        if (this.messageKey == messageKey) {
-            Put.put(getterPort, messageKey, message);
+        if (messages.containsKey(messageKey)) {
+            Put.put(messageKey, messages.get(messageKey),getterPort);
         }
-
         else {
             forward(messageKey, getterPort);
         }
@@ -73,6 +96,9 @@ public class Node {
     	{
     		setMessage(Integer.parseInt(input[1].trim()), input[2].trim());
     	}
+    	else{
+    		System.out.println("Parser no comprehendi la cody");
+    	}
     }
 
     /**
@@ -80,9 +106,9 @@ public class Node {
      * @param args Port(s) for a Node and optionally the port of its neighbour.
      * @throws InvalidArgumentException If no port for the Node is given.
      */
-    public static void main(String[] args) throws InvalidArgumentException {
+    public static void main(String[] args) throws IllegalArgumentException {
         if (args[0] == null) {
-            throw new InvalidArgumentException(args);
+            throw new IllegalArgumentException(args);
         }
 
         else if (args[1] == null) {

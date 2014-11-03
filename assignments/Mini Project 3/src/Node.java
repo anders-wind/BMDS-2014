@@ -1,10 +1,11 @@
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
+//import com.sun.javaws.exceptions.InvalidArgumentException;
 
 /**
  * Create a Node on a given port.
@@ -31,7 +32,6 @@ public class Node {
             while (true) {
                 Socket client = socket.accept();
                 new Thread(() -> handleMessage(client)).start();
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,7 +41,10 @@ public class Node {
     private void handleMessage(Socket client){
         try {
             DataInputStream fromClient = new DataInputStream(client.getInputStream());
-            parseInput(fromClient.readLine());
+            String input = (fromClient.readLine());
+            DataOutputStream toClient = new DataOutputStream(client.getOutputStream());
+            toClient.writeBytes("Tjek\n");
+            parseInput(input);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -104,9 +107,9 @@ public class Node {
      * @param args Port(s) for a Node and optionally the port of its neighbour.
      * @throws InvalidArgumentException If no port for the Node is given.
      */
-    public static void main(String[] args) throws InvalidArgumentException {
+    public static void main(String[] args) throws IllegalArgumentException {
         if (args[0] == null) {
-            throw new InvalidArgumentException(args);
+            throw new IllegalArgumentException(args);
         }
 
         else if (args[1] == null) {

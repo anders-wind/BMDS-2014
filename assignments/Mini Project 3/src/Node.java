@@ -42,19 +42,6 @@ public class Node {
             Get.get(messageKey, otherPort, originalPort);
         }
     }
-
-    public static void main(String[] args) throws InvalidArgumentException {
-        if (args[0] == null) {
-            throw new InvalidArgumentException(args);
-        }
-
-        else if (args[1] == null) {
-            new Node(Integer.parseInt(args[0]), 0);
-            return;
-        }
-
-        new Node(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
-    }
     
     
     private void parseInput(String getMessage)
@@ -68,5 +55,18 @@ public class Node {
     	{
     		setMessage(Integer.parseInt(input[1].trim()), input[2].trim());
     	}
+    }
+
+    public static void main(String[] args) throws InvalidArgumentException {
+        if (args[0] == null) {
+            throw new InvalidArgumentException(args);
+        }
+
+        else if (args[1] == null) {
+            new Node(Integer.parseInt(args[0]), 0);
+            return;
+        }
+
+        new Node(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
     }
 }

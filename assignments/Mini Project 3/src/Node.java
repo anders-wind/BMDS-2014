@@ -17,12 +17,22 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * the value of subsequent GETs is undefined (i.e., no answer, PUT(1, A) and PUT(1, B) are all valid results.)."
  */
 public class Node {
-    private String ip;
-    private int key;
+    private int ownPort;
+    private int otherPort;
 
-    public Node(String ownIp, int ownKey) {
-        ip = ownIp;
-        key = ownKey;
+    /**
+     * Create a node that will listen on a given port.
+     */
+    public Node(int ownPort) {
+        this.ownPort = ownPort;
+    }
+
+    /**
+     * Optionally create a Node that knows of another Node.
+     */
+    public Node(int ownPort, int otherPort) {
+        this.ownPort = ownPort;
+        this.otherPort = otherPort;
     }
 
     public String get(int messageKey, int portToGetFrom, int portToReceiveTo) {

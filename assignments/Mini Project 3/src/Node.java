@@ -2,7 +2,8 @@ import com.sun.javaws.exceptions.InvalidArgumentException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
- * WHAT I DO?
+ * Create a Node on a given port.
+ * The Node can also know of another Node in the network if another port is specified.
  */
 public class Node {
     private int ownPort;

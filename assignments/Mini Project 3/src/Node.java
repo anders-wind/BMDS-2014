@@ -63,9 +63,8 @@ public class Node {
      */
     public void getMessage(int messageKey, int getterPort) {
         if (messages.containsKey(messageKey)) {
-            Put.put(getterPort, messageKey, messages.get(messageKey));
+            Put.put(messageKey, messages.get(messageKey),getterPort);
         }
-
         else {
             forward(messageKey, getterPort);
         }

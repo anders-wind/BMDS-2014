@@ -87,12 +87,12 @@ public class Node {
      */
     private void parseInput(String getMessage)
     {
-    	String[] input = getMessage.split(":");
-    	if(input[0].equals("Get"))
+    	String[] input = getMessage.toLowerCase().split(":");
+    	if(input[0].equals("get"))
     	{
     		getMessage(Integer.parseInt(input[1].trim()),Integer.parseInt(input[2].trim()));
     	}
-    	else if(input[0].equals("Put"))
+    	else if(input[0].equals("put"))
     	{
     		setMessage(Integer.parseInt(input[1].trim()), input[2].trim());
     	}
@@ -104,11 +104,11 @@ public class Node {
     /**
      * Instantiate a Node with a given port and optionally a neighbour Node.
      * @param args Port(s) for a Node and optionally the port of its neighbour.
-     * @throws InvalidArgumentException If no port for the Node is given.
+     * @throws IllegalArgumentException If no port for the Node is given.
      */
     public static void main(String[] args) throws IllegalArgumentException {
         if (args[0] == null) {
-            throw new IllegalArgumentException(args);
+            throw new IllegalArgumentException();
         }
 
         else if (args[1] == null) {

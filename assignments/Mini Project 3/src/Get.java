@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,19 +9,15 @@ import java.net.Socket;
  * Created by Anders on 03/11/14.
  */
 public class Get {
-    public static void get(int messageKey, int portToGetFrom, int portToReceiveTo) {
+    public static void get(int messageKey, int portToGetFrom, int portToReceiveTo) throws IOException{
     	String message = "GET:" + messageKey + ":" + portToReceiveTo + " \n";
-    	
-    	try {
+
 	    	Socket nodeSocket 			= new Socket("localhost", portToGetFrom);
 	    	BufferedReader fromNode		= new BufferedReader(new InputStreamReader(nodeSocket.getInputStream()));
 	    	DataOutputStream toNode		= new DataOutputStream(nodeSocket.getOutputStream());
 	    	toNode.writeBytes(message);
 	    	fromNode.readLine(); // blocking till the receiver has read my stuff
 	    	nodeSocket.close();
-    	} catch(Exception e) {
-    		System.out.println(">> error happened in get method");
-    	}
     }
     
     public static void handleResponse(ServerSocket socket) {

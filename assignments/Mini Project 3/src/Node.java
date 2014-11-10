@@ -98,12 +98,19 @@ public class Node {
      * Forward the GET-request to the neighbour Node if this Node knows about it.
      */
     private void forward(int messageKey, int originalPort) {
-        if (otherPort != 0) {
-            Get.get(messageKey, otherPort, originalPort);
-        }
-        if (secondaryPort != 0) {
-            Get.get(messageKey, secondaryPort, originalPort);
-        }
+        try{
+        	if (otherPort != 0) {
+                Get.get(messageKey, otherPort, originalPort);
+                return; // everything fine
+            }
+        	if (secondaryPort != 0) {
+                Get.get(messageKey, secondaryPort, originalPort);
+                return; // everything fine
+            }
+        }catch(IOException ex)
+    	{
+        	System.err.println("Failed to retrieve I/O for the connection localhost");
+    	}
     }
     
     private void returnOtherPort()

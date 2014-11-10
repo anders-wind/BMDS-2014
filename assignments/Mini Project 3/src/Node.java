@@ -202,12 +202,12 @@ public class Node {
     	{
     		setMessage(Integer.parseInt(input[1].trim()), input[2].trim());
     	}
-    	else if(input[0].equals("heartbeat"))
+    	else if(input[0].equals("(( <3 ))"))
     	{
     		return;
     	}
     	else{
-    		System.out.println("Parser no comprehendi la cody");
+    		System.out.println("Parser no comprehendi la cody.");
     	}
     }
 

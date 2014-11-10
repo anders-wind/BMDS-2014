@@ -88,7 +88,7 @@ public class Node {
     		DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
     		
     		dataOut.writeBytes("HeartBeat:" + ownPort);
-    		dataIn.readLine();
+    		//dataIn.readLine();
     		System.out.println("Heartbeat to primary Succesfull");
     		dataOut.close();
     		dataIn.close();
@@ -111,7 +111,7 @@ public class Node {
     		DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
     		
     		dataOut.writeBytes("HeartBeat:" + ownPort);
-    		dataIn.readLine();
+    		//dataIn.readLine();
     		System.out.println("Heartbeat to secondary Succesfull");
     		dataOut.close();
     		dataIn.close();

@@ -10,9 +10,9 @@ import java.net.UnknownHostException;
 public class Put {
 
 	/**
-	 * public static void put(int portToSendTo, int messageKey, String
-	 * messageToPut) { //Send the message to a Node on the given port. //The
-	 * message has a key, and message. This message is then stored at the Node.}
+	 * public static void put(int messageKey, String messageToPut, int portToSendTo) {
+	 * //Send the message to a Node on the given port.
+	 * //The message has a key, and message. This message is then stored at the Node.}
 	 **/
 
 	public static void put(int key, String message, int port) {
@@ -35,6 +35,7 @@ public class Put {
 			dis.readLine();
 
 			dos.close();
+			dis.close();
 			socket.close();
 
 		} catch (UnknownHostException e) {

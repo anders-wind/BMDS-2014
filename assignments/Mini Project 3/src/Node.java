@@ -64,7 +64,7 @@ public class Node {
             DataInputStream dataIn = new DataInputStream(socket.getInputStream());
             DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
 
-            dataOut.writeBytes("returnPort: " + ownPort + "\n");
+            dataOut.writeBytes("ReturnPort: " + ownPort + "\n");
             secondaryPort = Integer.parseInt(dataIn.readLine().trim());
             System.out.println("Secondary port set to: " + secondaryPort);
             socket.close();
@@ -107,7 +107,7 @@ public class Node {
         DataInputStream dataIn = new DataInputStream(socket.getInputStream());
         DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
 
-        dataOut.writeBytes("(( <3 )) : " + ownPort + "\n");
+        dataOut.writeBytes("(( <3 )):" + ownPort + "\n");
         dataIn.readLine();
 
         socket.close();
@@ -208,16 +208,17 @@ public class Node {
      * Get: messageKey : getterPort
      * Put: messageKey : Message
      */
-    private void parseInput(String getMessage) {
-        String[] input = getMessage.toLowerCase().split(":");
+    private void parseInput(String message) {
+        String[] input = message.toLowerCase().split(":");
         if (input[0].equals("get")) {
             getMessage(Integer.parseInt(input[1].trim()), Integer.parseInt(input[2].trim()));
         } else if (input[0].equals("put")) {
             setMessage(Integer.parseInt(input[1].trim()), input[2].trim());
-        } else if (input[0].equals("(( <3 ))")) {
+        } else if (input[0].equals("(( <3 ))") || input[0].equals("returnport")) {
             return;
         } else {
-            System.out.println("Parser no comprehendi la cody.");
+            System.out.println("Failed parsing message. \nThe message received was: " + message);
+
         }
     }
 

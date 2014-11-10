@@ -88,11 +88,11 @@ public class Node {
 
     private void doHeartbeat(int onPort) throws IOException {
         Socket socket = new Socket("localhost", onPort);
-        //DataInputStream dataIn = new DataInputStream(socket.getInputStream());
+        DataInputStream dataIn = new DataInputStream(socket.getInputStream());
         DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
 
         dataOut.writeBytes("HeartBeat:" + ownPort + "\n");
-        //dataIn.readLine();
+        dataIn.readLine();
 
         socket.close();
     }

@@ -3,6 +3,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 
 //import com.sun.javaws.exceptions.InvalidArgumentException;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 public class Node {
     private int ownPort;
     private int otherPort;
+    private int secondaryPort;
     private HashMap<Integer, String> messages = new HashMap<Integer, String>();
 
     /**
@@ -26,6 +28,7 @@ public class Node {
         if (otherPort != 0) {
             this.otherPort = otherPort;
         }
+        getSecondaryNode();
 
         try {
             ServerSocket socket = new ServerSocket(ownPort);
@@ -37,13 +40,34 @@ public class Node {
             e.printStackTrace();
         }
     }
+    
+    private void getSecondaryNode()
+    {
+    	try{
+    		Socket socket = new Socket("localhost", otherPort);
+    		DataInputStream dataIn = new DataInputStream(socket.getInputStream());
+    		DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
+    		
+    		dataOut.writeBytes("returnPort: " + ownPort + "\n");
+    		secondaryPort = Integer.parseInt(dataIn.readLine().trim());
+    		dataOut.close();
+    		dataIn.close();
+    		socket.close();
+    	}catch(UnknownHostException ex)
+    	{
+    		System.err.println("Unknown Host: localhost");
+    	}catch(IOException ex)
+    	{
+    		System.err.println("Failed to retrieve I/O for the connection localhost");
+    	}
+    }
 
     private void handleMessage(Socket client){
         try {
             DataInputStream fromClient = new DataInputStream(client.getInputStream());
             String input = (fromClient.readLine());
             DataOutputStream toClient = new DataOutputStream(client.getOutputStream());
-            toClient.writeBytes("Tjek\n");
+            toClient.writeBytes(ownPort + "\n");
             parseInput(input);
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,6 +101,14 @@ public class Node {
         if (otherPort != 0) {
             Get.get(messageKey, otherPort, originalPort);
         }
+        if (secondaryPort != 0) {
+            Get.get(messageKey, secondaryPort, originalPort);
+        }
+    }
+    
+    private void returnOtherPort()
+    {
+    	
     }
     
     /**
@@ -95,6 +127,10 @@ public class Node {
     	else if(input[0].equals("put"))
     	{
     		setMessage(Integer.parseInt(input[1].trim()), input[2].trim());
+    	}
+    	else if(input[0].equals("returnport"))
+    	{
+    		return;
     	}
     	else{
     		System.out.println("Parser no comprehendi la cody");

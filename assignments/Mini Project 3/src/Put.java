@@ -33,9 +33,7 @@ public class Put {
 			System.out.println("Sending");
 
 			dis.readLine();
-
-			dos.close();
-			dis.close();
+			
 			socket.close();
 
 		} catch (UnknownHostException e) {

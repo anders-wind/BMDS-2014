@@ -91,7 +91,7 @@ public class Node {
         //DataInputStream dataIn = new DataInputStream(socket.getInputStream());
         DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
 
-        dataOut.writeBytes("HeartBeat:" + ownPort);
+        dataOut.writeBytes("HeartBeat:" + ownPort + "\n");
         //dataIn.readLine();
 
         socket.close();
@@ -201,10 +201,6 @@ public class Node {
     	else if(input[0].equals("put"))
     	{
     		setMessage(Integer.parseInt(input[1].trim()), input[2].trim());
-    	}
-    	else if(input[0].equals("returnport"))
-    	{
-    		return;
     	}
     	else if(input[0].equals("heartbeat"))
     	{

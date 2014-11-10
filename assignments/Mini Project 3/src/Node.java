@@ -84,19 +84,23 @@ public class Node {
     		}
 		} while (true);
     }
-    
+
+    private void doHeartbeat(int onPort) throws IOException {
+        Socket socket = new Socket("localhost", onPort);
+        //DataInputStream dataIn = new DataInputStream(socket.getInputStream());
+        DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
+
+        dataOut.writeBytes("HeartBeat:" + ownPort);
+        //dataIn.readLine();
+
+        socket.close();
+    }
+
     private void checkPrimary()
     {
     	try{
-    		Socket socket = new Socket("localhost", otherPort);
-    		DataInputStream dataIn = new DataInputStream(socket.getInputStream());
-    		DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
-    		
-    		dataOut.writeBytes("HeartBeat:" + ownPort);
-    		//dataIn.readLine();
-
-    		System.out.println("Heartbeat to primary successfull");
-    		socket.close();
+            doHeartbeat(otherPort);
+            System.out.println("Heartbeat to primary successfull.");
     	}catch(UnknownHostException ex)
     	{
     		System.err.println("Unknown Host: localhost");
@@ -110,15 +114,8 @@ public class Node {
     private void checkSecondary()
     {
     	try{
-    		Socket socket = new Socket("localhost", secondaryPort);
-    		DataInputStream dataIn = new DataInputStream(socket.getInputStream());
-    		DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
-    		
-    		dataOut.writeBytes("HeartBeat:" + ownPort);
-    		//dataIn.readLine();
-
+    		doHeartbeat(secondaryPort);
     		System.out.println("Heartbeat to secondary successfull");
-    		socket.close();
     	}catch(UnknownHostException ex)
     	{
     		System.err.println("Unknown Host: localhost");
@@ -227,7 +224,7 @@ public class Node {
             throw new IllegalArgumentException();
         }
 
-        else if (args[1] == null) {
+        else if (args.length < 2) {
             new Node(Integer.parseInt(args[0]), 0);
             return;
         }

@@ -14,26 +14,30 @@ import java.util.HashMap;
  */
 public class Node {
     private int ownPort;
-    private int otherPort;
+    private int primaryPort;
     private int secondaryPort;
-    private HashMap<Integer, String> messages = new HashMap<Integer, String>();
+    private HashMap<Integer, String> messages = new HashMap<>();
 
     /**
      * Create a Node that might optionally know about another Node in the network.
      */
-    public Node(int ownPort, int otherPort) {
+    public Node(int ownPort, int primaryPort) {
         //Open own port, and optionally know about a neighbour Node.
         this.ownPort = ownPort;
 
-        if (otherPort != 0) {
-            this.otherPort = otherPort;
+        //Check if no neighbour port has been provided.
+        //If there, then we chain this node to the neighbours neighbour.
+        if (primaryPort != 0) {
+            this.primaryPort = primaryPort;
             getSecondaryNode();
         }
-        
+
+        //Start heartbeating (heartbeats fix errors in the system.
         new Thread(() -> heartBeat()).start();
 
         try {
             while (true) {
+                //Receive messages infinitely.
             	ServerSocket socket = new ServerSocket(ownPort);
                 Socket client = socket.accept();
                 new Thread(() -> handleMessage(client)).start();
@@ -47,7 +51,7 @@ public class Node {
     private void getSecondaryNode()
     {
     	try{
-    		Socket socket = new Socket("localhost", otherPort);
+    		Socket socket = new Socket("localhost", primaryPort);
     		DataInputStream dataIn = new DataInputStream(socket.getInputStream());
     		DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
     		
@@ -75,7 +79,7 @@ public class Node {
     		{
     			System.out.println(e);
     		}
-    		if(otherPort != 0)
+    		if(primaryPort != 0)
     		{
     			checkPrimary();
     		}
@@ -91,7 +95,7 @@ public class Node {
         DataInputStream dataIn = new DataInputStream(socket.getInputStream());
         DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
 
-        dataOut.writeBytes("(( <3 )):" + ownPort + "\n");
+        dataOut.writeBytes("(( <3 )) : " + ownPort + "\n");
         dataIn.readLine();
 
         socket.close();
@@ -100,15 +104,15 @@ public class Node {
     private void checkPrimary()
     {
     	try{
-            doHeartbeat(otherPort);
+            doHeartbeat(primaryPort);
             System.out.println("(( <3 )) to primary successful.");
     	}catch(UnknownHostException ex)
     	{
     		System.err.println("Unknown Host: localhost");
     	}catch(IOException ex)
     	{
-    		otherPort = secondaryPort;
-    		System.out.println("(( <3 )) to primary failed: ownPort set to secondary port:" + otherPort);
+    		primaryPort = secondaryPort;
+    		System.out.println("(( <3 )) to primary failed: ownPort set to secondary port:" + primaryPort);
     	}
     }
     
@@ -132,7 +136,7 @@ public class Node {
             DataInputStream fromClient = new DataInputStream(client.getInputStream());
             String input = (fromClient.readLine());
             DataOutputStream toClient = new DataOutputStream(client.getOutputStream());
-            toClient.writeBytes(otherPort + "\n");
+            toClient.writeBytes(primaryPort + "\n");
             parseInput(input);
         } catch (IOException e) {
             e.printStackTrace();
@@ -164,8 +168,8 @@ public class Node {
      */
     private void forward(int messageKey, int originalPort) {
         try{
-        	if (otherPort != 0) {
-                Get.get(messageKey, otherPort, originalPort);
+        	if (primaryPort != 0) {
+                Get.get(messageKey, primaryPort, originalPort);
                 return; // everything fine
             }
         }catch(IOException ex)

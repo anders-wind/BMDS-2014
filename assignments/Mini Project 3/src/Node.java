@@ -27,8 +27,8 @@ public class Node {
 
         if (otherPort != 0) {
             this.otherPort = otherPort;
+            getSecondaryNode();
         }
-        getSecondaryNode();
         
         new Thread(() -> heartBeat()).start();
 

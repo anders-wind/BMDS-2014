@@ -29,6 +29,8 @@ public class Node {
             this.otherPort = otherPort;
         }
         getSecondaryNode();
+        
+        new Thread(() -> heartBeat()).start();
 
         try {
             ServerSocket socket = new ServerSocket(ownPort);
@@ -64,10 +66,15 @@ public class Node {
     }
     
     
-    private void heartBeat() throws Exception
+    private void heartBeat()
     {
     	do {
-    		Thread.sleep(3000);
+    		try{
+    			Thread.sleep(3000);
+    		}catch(InterruptedException e)
+    		{
+    			System.out.println(e);
+    		}
     		checkPrimary();
     		checkSecondary();
 		} while (true);

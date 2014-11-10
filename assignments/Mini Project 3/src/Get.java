@@ -52,7 +52,11 @@ public class Get {
     	Thread t = new Thread(() -> handleResponse(replySocket)); // Open socket to get replied to
     	t.start();
     	get(key, nodePort, myPort);
-    	Thread.sleep(3000);
+    	int timeoutCounter = 0;
+    	do {
+    		Thread.sleep(100);
+    		timeoutCounter++;
+		} while (!gotResponse && timeoutCounter < 30);
     	if(gotResponse == false)
     	{
     		t.stop(); // horrible way to do this.

@@ -9,6 +9,8 @@ import java.net.Socket;
  * Created by Anders on 03/11/14.
  */
 public class Get {
+	private static boolean gotResponse = false;
+	
     public static void get(int messageKey, int portToGetFrom, int portToReceiveTo) throws IOException{
     	String message = "GET:" + messageKey + ":" + portToReceiveTo + " \n";
 
@@ -32,6 +34,7 @@ public class Get {
 	    	toAnswerNode.writeBytes("Tjek \n");
 	    	
 	    	// All its done. Peace out - Hasta la vista baby.
+	    	gotResponse = true;
 	    	reply.close();
 	    	System.out.println(output + " \n");
     	} catch(Exception e) {
@@ -49,8 +52,12 @@ public class Get {
     	Thread t = new Thread(() -> handleResponse(replySocket)); // Open socket to get replied to
     	t.start();
     	get(key, nodePort, myPort);
-    	Thread.sleep(5);
-    	t.stop(); // horrible way to do this.
-    	System.out.println(">> Timeout on response from peer/node.");
+    	Thread.sleep(3000);
+    	if(gotResponse == false)
+    	{
+    		t.stop(); // horrible way to do this.
+    		System.out.println(">> Timeout on response from peer/node.");
+    	}
+    	gotResponse = false;
     }
 }

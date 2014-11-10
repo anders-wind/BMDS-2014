@@ -50,6 +50,7 @@ public class Node {
     		
     		dataOut.writeBytes("returnPort: " + ownPort + "\n");
     		secondaryPort = Integer.parseInt(dataIn.readLine().trim());
+    		System.out.println("Secondary port set to: " + secondaryPort);
     		dataOut.close();
     		dataIn.close();
     		socket.close();
@@ -61,13 +62,69 @@ public class Node {
     		System.err.println("Failed to retrieve I/O for the connection localhost");
     	}
     }
+    
+    
+    private void heartBeat() throws Exception
+    {
+    	do {
+    		Thread.sleep(3000);
+    		checkPrimary();
+    		checkSecondary();
+		} while (true);
+    }
+    
+    private void checkPrimary()
+    {
+    	try{
+    		Socket socket = new Socket("localhost", otherPort);
+    		DataInputStream dataIn = new DataInputStream(socket.getInputStream());
+    		DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
+    		
+    		dataOut.writeBytes("HeartBeat:" + ownPort);
+    		dataIn.readLine();
+    		System.out.println("Heartbeat to primary Succesfull");
+    		dataOut.close();
+    		dataIn.close();
+    		socket.close();
+    	}catch(UnknownHostException ex)
+    	{
+    		System.err.println("Unknown Host: localhost");
+    	}catch(IOException ex)
+    	{
+    		ownPort = secondaryPort;
+    		System.err.println("Failed to retrieve I/O for the connection localhost");
+    	}
+    }
+    
+    private void checkSecondary()
+    {
+    	try{
+    		Socket socket = new Socket("localhost", secondaryPort);
+    		DataInputStream dataIn = new DataInputStream(socket.getInputStream());
+    		DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
+    		
+    		dataOut.writeBytes("HeartBeat:" + ownPort);
+    		dataIn.readLine();
+    		System.out.println("Heartbeat to secondary Succesfull");
+    		dataOut.close();
+    		dataIn.close();
+    		socket.close();
+    	}catch(UnknownHostException ex)
+    	{
+    		System.err.println("Unknown Host: localhost");
+    	}catch(IOException ex)
+    	{
+    		getSecondaryNode();
+    		System.err.println("Failed to retrieve I/O for the connection localhost");
+    	}
+    }
 
     private void handleMessage(Socket client){
         try {
             DataInputStream fromClient = new DataInputStream(client.getInputStream());
             String input = (fromClient.readLine());
             DataOutputStream toClient = new DataOutputStream(client.getOutputStream());
-            toClient.writeBytes(ownPort + "\n");
+            toClient.writeBytes(otherPort + "\n");
             parseInput(input);
         } catch (IOException e) {
             e.printStackTrace();
@@ -103,21 +160,23 @@ public class Node {
                 Get.get(messageKey, otherPort, originalPort);
                 return; // everything fine
             }
+        }catch(IOException ex)
+    	{
+        	System.err.println("Failed to retrieve I/O for the connection localhost");
+    	}
+        
+        try
+        {
         	if (secondaryPort != 0) {
-                Get.get(messageKey, secondaryPort, originalPort);
-                return; // everything fine
-            }
+        		Get.get(messageKey, secondaryPort, originalPort);
+        		return; // everything fine
+        	}
         }catch(IOException ex)
     	{
         	System.err.println("Failed to retrieve I/O for the connection localhost");
     	}
     }
-    
-    private void returnOtherPort()
-    {
-    	
-    }
-    
+
     /**
      * Finished the Parser.
 	 *	Get: messageKey : getterPort
@@ -136,6 +195,10 @@ public class Node {
     		setMessage(Integer.parseInt(input[1].trim()), input[2].trim());
     	}
     	else if(input[0].equals("returnport"))
+    	{
+    		return;
+    	}
+    	else if(input[0].equals("heartbeat"))
     	{
     		return;
     	}

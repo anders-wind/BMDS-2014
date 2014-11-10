@@ -33,10 +33,11 @@ public class Node {
         new Thread(() -> heartBeat()).start();
 
         try {
-            ServerSocket socket = new ServerSocket(ownPort);
             while (true) {
+            	ServerSocket socket = new ServerSocket(ownPort);
                 Socket client = socket.accept();
                 new Thread(() -> handleMessage(client)).start();
+                socket.close();
             }
         } catch (Exception e) {
             e.printStackTrace();

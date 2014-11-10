@@ -53,8 +53,6 @@ public class Node {
     		dataOut.writeBytes("returnPort: " + ownPort + "\n");
     		secondaryPort = Integer.parseInt(dataIn.readLine().trim());
     		System.out.println("Secondary port set to: " + secondaryPort);
-    		dataOut.close();
-    		dataIn.close();
     		socket.close();
     	}catch(UnknownHostException ex)
     	{
@@ -69,14 +67,21 @@ public class Node {
     private void heartBeat()
     {
     	do {
+    		System.out.println("heartbeat called");
     		try{
     			Thread.sleep(3000);
     		}catch(InterruptedException e)
     		{
     			System.out.println(e);
     		}
-    		checkPrimary();
-    		checkSecondary();
+    		if(otherPort != 0)
+    		{
+    			checkPrimary();
+    		}
+    		if(secondaryPort != 0)
+    		{
+    			checkSecondary();
+    		}
 		} while (true);
     }
     
@@ -89,17 +94,16 @@ public class Node {
     		
     		dataOut.writeBytes("HeartBeat:" + ownPort);
     		//dataIn.readLine();
-    		System.out.println("Heartbeat to primary Succesfull");
-    		dataOut.close();
-    		dataIn.close();
+
+    		System.out.println("Heartbeat to primary successfull");
     		socket.close();
     	}catch(UnknownHostException ex)
     	{
     		System.err.println("Unknown Host: localhost");
     	}catch(IOException ex)
     	{
-    		ownPort = secondaryPort;
-    		System.err.println("Failed to retrieve I/O for the connection localhost");
+    		otherPort = secondaryPort;
+    		System.out.println("Heartbeat to primary failed: ownPort set to secondary port:" + otherPort);
     	}
     }
     
@@ -112,9 +116,8 @@ public class Node {
     		
     		dataOut.writeBytes("HeartBeat:" + ownPort);
     		//dataIn.readLine();
-    		System.out.println("Heartbeat to secondary Succesfull");
-    		dataOut.close();
-    		dataIn.close();
+
+    		System.out.println("Heartbeat to secondary successfull");
     		socket.close();
     	}catch(UnknownHostException ex)
     	{
@@ -122,7 +125,7 @@ public class Node {
     	}catch(IOException ex)
     	{
     		getSecondaryNode();
-    		System.err.println("Failed to retrieve I/O for the connection localhost");
+    		System.out.println("Heartbeat to secondary failed: secondary port is set to:" + secondaryPort);
     	}
     }
 

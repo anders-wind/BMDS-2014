@@ -100,7 +100,7 @@ public class Node {
     {
     	try{
             doHeartbeat(otherPort);
-            System.out.println("Heartbeat to primary successfull.");
+            System.out.println("Heartbeat to primary successful.");
     	}catch(UnknownHostException ex)
     	{
     		System.err.println("Unknown Host: localhost");
@@ -115,7 +115,7 @@ public class Node {
     {
     	try{
     		doHeartbeat(secondaryPort);
-    		System.out.println("Heartbeat to secondary successfull");
+    		System.out.println("Heartbeat to secondary successful.");
     	}catch(UnknownHostException ex)
     	{
     		System.err.println("Unknown Host: localhost");

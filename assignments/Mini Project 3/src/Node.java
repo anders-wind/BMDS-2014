@@ -68,7 +68,7 @@ public class Node {
     private void heartBeat()
     {
     	do {
-    		System.out.println("heartbeat called");
+    		System.out.println("(( <3 ))");
     		try{
     			Thread.sleep(3000);
     		}catch(InterruptedException e)
@@ -91,7 +91,7 @@ public class Node {
         DataInputStream dataIn = new DataInputStream(socket.getInputStream());
         DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
 
-        dataOut.writeBytes("HeartBeat:" + ownPort + "\n");
+        dataOut.writeBytes("(( <3 )):" + ownPort + "\n");
         dataIn.readLine();
 
         socket.close();
@@ -101,14 +101,14 @@ public class Node {
     {
     	try{
             doHeartbeat(otherPort);
-            System.out.println("Heartbeat to primary successful.");
+            System.out.println("(( <3 )) to primary successful.");
     	}catch(UnknownHostException ex)
     	{
     		System.err.println("Unknown Host: localhost");
     	}catch(IOException ex)
     	{
     		otherPort = secondaryPort;
-    		System.out.println("Heartbeat to primary failed: ownPort set to secondary port:" + otherPort);
+    		System.out.println("(( <3 )) to primary failed: ownPort set to secondary port:" + otherPort);
     	}
     }
     
@@ -116,14 +116,14 @@ public class Node {
     {
     	try{
     		doHeartbeat(secondaryPort);
-    		System.out.println("Heartbeat to secondary successful.");
+    		System.out.println("(( <3 )) to secondary successful.");
     	}catch(UnknownHostException ex)
     	{
     		System.err.println("Unknown Host: localhost");
     	}catch(IOException ex)
     	{
     		getSecondaryNode();
-    		System.out.println("Heartbeat to secondary failed: secondary port is set to:" + secondaryPort);
+    		System.out.println("(( <3 )) to secondary failed: secondary port is set to:" + secondaryPort);
     	}
     }
 

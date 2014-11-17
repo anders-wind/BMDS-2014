@@ -24,7 +24,7 @@ public class Get {
     
     public static void newNode(int nodePort, int nodeID, int nextNode)throws IOException
     {
-    	String message = "NewNode:" + nodePort + ":" + nodeID + " \n";
+    	String message = "NewNode: " + nodePort + " : " + nodeID + " \n";
 
     	Socket nodeSocket 			= new Socket("localhost", nextNode);
     	BufferedReader fromNode		= new BufferedReader(new InputStreamReader(nodeSocket.getInputStream()));

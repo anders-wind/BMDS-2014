@@ -11,9 +11,9 @@ import java.util.HashMap;
  * The Node can also know of another Node in the network if another port is specified.
  */
 public class Node {
-    private int ownPort;
-    private int primaryPort;
-    private int secondaryPort;
+    private PortWithID ownPort = new PortWithID();
+    private PortWithID primaryPort = new PortWithID();
+    private PortWithID secondaryPort = new PortWithID();
     private HashMap<Integer, String> messages = new HashMap<>();
 
     /**
@@ -21,12 +21,12 @@ public class Node {
      */
     public Node(int ownPort, int primaryPort) {
         //Open own port, and optionally know about a neighbour Node.
-        this.ownPort = ownPort;
+        this.ownPort.setPort(ownPort);
 
         //Check if no neighbour port has been provided.
         //If there, then we chain this node to the neighbours neighbour.
         if (primaryPort != 0) {
-            this.primaryPort = primaryPort;
+            this.primaryPort.setPort(primaryPort);
             getSecondaryNode();
         }
 
@@ -44,7 +44,7 @@ public class Node {
         try {
             while (true) {
 
-                ServerSocket socket = new ServerSocket(ownPort);
+                ServerSocket socket = new ServerSocket(ownPort.getPort());
                 Socket client = socket.accept();
                 new Thread(() -> handleMessage(client)).start();
                 socket.close();
@@ -60,12 +60,12 @@ public class Node {
      */
     private void getSecondaryNode() {
         try {
-            Socket socket = new Socket("localhost", primaryPort);
+            Socket socket = new Socket("localhost", primaryPort.getPort());
             DataInputStream dataIn = new DataInputStream(socket.getInputStream());
             DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
 
             dataOut.writeBytes("ReturnPort: " + ownPort + "\n");
-            secondaryPort = Integer.parseInt(dataIn.readLine().trim());
+            secondaryPort.setPort(Integer.parseInt(dataIn.readLine().trim()));
             System.out.println("Secondary port set to: " + secondaryPort);
             socket.close();
         } catch (UnknownHostException ex) {
@@ -88,10 +88,10 @@ public class Node {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (primaryPort != 0) {
+            if (primaryPort.getPort() != 0) {
                 checkPrimary();
             }
-            if (secondaryPort != 0) {
+            if (secondaryPort.getPort() != 0) {
                 checkSecondary();
             }
         }
@@ -119,7 +119,7 @@ public class Node {
      */
     private void checkPrimary() {
         try {
-            doHeartbeat(primaryPort);
+            doHeartbeat(primaryPort.getPort());
             System.out.println("(( <3 )) to primary successful.");
         } catch (UnknownHostException ex) {
             System.err.println("Unknown Host: localhost");
@@ -135,7 +135,7 @@ public class Node {
      */
     private void checkSecondary() {
         try {
-            doHeartbeat(secondaryPort);
+            doHeartbeat(secondaryPort.getPort());
             System.out.println("(( <3 )) to secondary successful.");
         } catch (UnknownHostException ex) {
             System.err.println("Unknown Host: localhost");
@@ -185,8 +185,8 @@ public class Node {
      */
     private void forward(int messageKey, int originalPort) {
         try {
-            if (primaryPort != 0) {
-                Get.get(messageKey, primaryPort, originalPort);
+            if (primaryPort.getPort() != 0) {
+                Get.get(messageKey, primaryPort.getPort(), originalPort);
                 return; // everything fine
             }
         } catch (IOException ex) {
@@ -194,8 +194,8 @@ public class Node {
         }
 
         try {
-            if (secondaryPort != 0) {
-                Get.get(messageKey, secondaryPort, originalPort);
+            if (secondaryPort.getPort() != 0) {
+                Get.get(messageKey, secondaryPort.getPort(), originalPort);
                 return; // everything fine
             }
         } catch (IOException ex) {
@@ -237,5 +237,35 @@ public class Node {
         }
 
         new Node(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+    }
+    
+    
+    private class PortWithID
+    {
+    	private int port;
+    	private int id;
+    	
+    	public PortWithID()
+    	{
+    	}
+    	
+    	public void setPort(int port)
+    	{
+    		this.port = port;
+    	}
+    	public int getPort()
+    	{
+    		return port;
+    	}
+    	
+    	public void setID(int id)
+    	{
+    		this.id = id;
+    	}
+    	
+    	public int getID()
+    	{
+    		return id;
+    	}
     }
 }

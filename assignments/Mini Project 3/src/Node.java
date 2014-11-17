@@ -22,13 +22,16 @@ public class Node {
     public Node(int ownPort, int primaryPort) {
         //Open own port, and optionally know about a neighbour Node.
         this.ownPort.setPort(ownPort);
+        this.ownPort.setID(1);
 
         //Check if no neighbour port has been provided.
         //If there, then we chain this node to the neighbours neighbour.
         if (primaryPort != 0) {
             this.primaryPort.setPort(primaryPort);
             fixPrimAndSecNodes();
+            this.ownPort.setID(this.primaryPort.getID() + 1);
             newNode(this.ownPort.getPort(), this.ownPort.getID());
+            fixPrimAndSecNodes();
         }
 
         //Start heartbeating (heartbeats fix errors in the system).

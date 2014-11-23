@@ -31,13 +31,13 @@ Answers
 ### 17.10 
 **A centralized global deadlock detector holds the union of local wait-for graphs. Give an example to explain how a phantom deadlock could be detected if a waiting transaction in a deadlock cycle aborts during the deadlock detection procedure.**
 
-See page 745
+(See page 745)
 
 
 ### 17.11 
 **Consider the edge-chasing algorithm (without priorities). Give examples to show that it could detect phantom deadlocks.**
 
-See page 746
+(See page 746)
 
 
 ### 17.12 
@@ -52,6 +52,4 @@ It provides two operations for its clients:**
 2. Describe how the recovery manager would use this information to recover the effects of T, U and V when the server is replaced after a crash. 
 3. What is the significance of the order of the commit entries in the log file?
 
-See pages 753–754
-
-
+(See pages 753–754)

@@ -14,8 +14,13 @@ _(Page 636)_
 
 ### 15.6 
 **Give an example execution of the ring-based algorithm to show that processes are not necessarily granted entry to the critical section in happened-before order.**
-
-(See page 637)
+The processes in the ring can communicate independently of the ring. 
+Imagine we have a clockwise ring of process A, B and C, where process A currently has the token. 
+Process C then requests the token. Afterwards process B requests the token.
+Process B would then in this case get the token before process C, even though process C requested the token before B. 
+This means that the processes aren't granted entry in happened-before order.
+	  
+_(Page 637)_
 
 
 ### 15.23 

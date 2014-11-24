@@ -24,13 +24,16 @@ _(Page 637)_
 
 ### 15.23 
 **Show that Byzantine agreement can be reached for three generals, with one of them faulty, if the generals digitally sign their messages.**
-
-(See page 665)
+If the receiver of a transaction knows who the originator is, then it is possible to find the Byzantine "traitor" (faulty/incorrect).
+If the Byzantine commander sends out three different values to three different lieutenants, then because of the signed message, they can determine that the commander is the traitor. They can verify the messages between each other, and can see that the differing messages also come from the commander. 
+If a lieutenant is a traitor, then the other lieutenants will be able to see the original order, and see who sent them the incorrect order. The lieutenant that sent the incorrect order is the traitor. 
+ 
+_(Page 665, Wikipedia)_
 
 
 ### 17.4 
 **Give an example of the interleaving, of two transactions that is serially equivalent at each server but is not serially equivalent globally.**
-om
+
 (See page 740)
 
 
